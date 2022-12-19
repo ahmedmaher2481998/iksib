@@ -12,10 +12,17 @@ type wrapperProps = {
   children: ReactNode;
 };
 
-const FromCard: FC<wrapperProps> = ({ children }) => {
+const FormCard: FC<wrapperProps> = ({ children }) => {
   return (
     <>
-      <Grid container bgcolor={"white"} p={1} borderRadius={2}>
+      <Grid
+        container
+        justifyContent={"space-between"}
+        alignItems="center"
+        bgcolor={"white"}
+        p={1}
+        borderRadius={2}
+      >
         {children}
       </Grid>
     </>
@@ -29,4 +36,4 @@ const FormCardItem: FC<props> = ({ children, size }) => {
   );
 };
 
-export { FormCardItem, FromCard };
+export { FormCardItem, FormCard };

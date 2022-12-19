@@ -80,7 +80,7 @@ export const product = {
     ],
   },
 };
-var categories = [
+export const categories = [
   {
     category_id: 1,
     category_name: "Food",
@@ -128,7 +128,7 @@ var addOns = [
     name: "Extra Ketchup",
   },
 ];
-var branches = [
+export const branches = [
   {
     branch_id: 1,
     branch_name: "Dokki Branch",
