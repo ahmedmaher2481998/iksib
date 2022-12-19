@@ -116,7 +116,7 @@ export const categories = [
     ],
   },
 ];
-var addOns = [
+export const addOns = [
   {
     id: 1,
     price: 10.0,

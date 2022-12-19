@@ -4,7 +4,11 @@ import SidePanel from "./SidePanel";
 type props = { children: ReactNode };
 const Layout: FC<props> = ({ children }: props) => {
   return (
-    <Grid sx={{ minHeight: "100vh" }} bgcolor={"secondary.main"} container>
+    <Grid
+      sx={{ minHeight: "100vh", pb: 3 }}
+      bgcolor={"secondary.main"}
+      container
+    >
       <Grid item xs={1} sm={3} md={2}>
         <SidePanel />
       </Grid>

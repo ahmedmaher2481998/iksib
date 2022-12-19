@@ -13,6 +13,8 @@ import {
   Checkbox,
   ListItemText,
   SelectChangeEvent,
+  Autocomplete,
+  Button,
 } from "@mui/material";
 import React from "react";
 import { ArrowBack } from "@mui/icons-material";
@@ -25,6 +27,7 @@ import SubCatagories from "./SubCatogries";
 import TitleDescriptionCard from "./TitleDescriptionCard";
 import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
+import AddonsCard from "./AddonsCard";
 
 type formValues = {
   id: number;
@@ -91,9 +94,17 @@ const ProductForm = () => {
             </Stack>
           </FormCardItem>
         </FormCard>
-        {/* <FormCard>
-          <FormCardItem></FormCardItem>
-        </FormCard> */}
+        <AddonsCard />
+        <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
+          <Button
+            variant="contained"
+            size="large"
+            type="submit"
+            sx={{ bgcolor: "primary.main" }}
+          >
+            Save
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
