@@ -5,10 +5,10 @@ type props = { children: ReactNode };
 const Layout: FC<props> = ({ children }: props) => {
   return (
     <Grid sx={{ minHeight: "100vh" }} bgcolor={"secondary.main"} container>
-      <Grid item xs={1.8}>
+      <Grid item xs={1} sm={3} md={2}>
         <SidePanel />
       </Grid>
-      <Grid item xs={10}>
+      <Grid item xs={11} sm={9} md={10}>
         {children}
       </Grid>
     </Grid>

@@ -35,7 +35,11 @@ const SidePanel = () => (
     bgcolor={"white"}
   >
     <Box py={1} mb={1} pl={2} sx={{ width: "100%" }}>
-      <Typography variant="h4" fontWeight="800" sx={{ cursor: "pointer" }}>
+      <Typography
+        variant="h4"
+        fontWeight="800"
+        sx={{ cursor: "pointer", display: { xs: "none", md: "inline-block" } }}
+      >
         IKSIB
       </Typography>
     </Box>
@@ -58,19 +62,38 @@ const SidePanel = () => (
         title="Appearance"
       />
     </List>
-    <Button
-      variant="contained"
-      startIcon={<Logout />}
+    <Box
+      justifyContent={"center"}
       sx={(theme) => ({
         mt: "auto",
+        width: "100%",
+
         mb: 8,
-        // 2 * 8px for each side
-        width: "calc(100% - 8px * 2 * 2)",
-        py: 1,
       })}
     >
-      Logout
-    </Button>
+      <Button
+        sx={{
+          display: {
+            sm: "flex",
+            xs: "none",
+          },
+          py: 1,
+          mx: "auto",
+          // 2 * 8px for each side
+          width: "calc(100% - 8px * 2 * 2)",
+        }}
+        variant="contained"
+        startIcon={<Logout />}
+      >
+        Logout
+      </Button>
+      <IconButton
+        color="primary"
+        sx={{ mx: "auto", display: { sx: "flex", sm: "none" } }}
+      >
+        <Logout />
+      </IconButton>
+    </Box>
   </Box>
 );
 
@@ -116,6 +139,7 @@ const ListItemComponent: FC<ListItemComponentProps> = ({
         primaryTypographyProps={{
           color: active ? "primary.main" : "shade.main",
           fontWeight: "bold",
+          display: { xs: "none", sm: "inline-block" },
         }}
         primary={title}
       />

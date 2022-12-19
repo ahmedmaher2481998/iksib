@@ -1,7 +1,12 @@
 import Layout from "../components/Layout";
+import ProductForm from "../components/ProductForm";
 
 const AddProductPage = () => {
-  return <Layout>AddProductPage</Layout>;
+  return (
+    <Layout>
+      <ProductForm />
+    </Layout>
+  );
 };
 
 export default AddProductPage;
