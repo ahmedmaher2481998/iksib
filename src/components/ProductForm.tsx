@@ -21,33 +21,35 @@ import { ArrowBack } from "@mui/icons-material";
 import FormHeader from "./FormHeader";
 import { FormCard, FormCardItem } from "./FormCard";
 import { productValidationResolver } from "../shared/validation/productValidation";
-import { FieldErrorsImpl, useForm, UseFormRegister } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { categories as categoriesData } from "../data";
 import SubCatagories from "./SubCatogries";
 import TitleDescriptionCard from "./TitleDescriptionCard";
 import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
 import AddonsCard from "./AddonsCard";
-import VariantsCard from "./VariantsCard";
-import { formHookType, formValues } from "../shared/types";
+import { formValues } from "../shared/types";
 import SelectionPickableAndVariants from "./SelectionPickableAndVarainats";
+import SubCategory from "./SubCategory";
 
 const ProductForm = () => {
-  const [catagories, setCatagories] = useState<string[]>([]);
-  const [pickable, setPickable] = useState<"true" | "false" | "">("");
-  const [hasVariants, setHasVariants] = useState<"true" | "false" | "">("");
+  const [catagories, setCatagories] = useState<number[]>([]);
+
   const {
     formState: { errors },
     handleSubmit,
     register,
+    getValues,
+    control,
     reset,
+    setValue,
   } = useForm<formValues>({
     resolver: productValidationResolver,
   });
-  const formHook = { register, errors };
+  const formHook = { setValue, register, errors, getValues, control };
 
   const handleProductSubmit = (data: formValues) => {
-    console.clear();
+    console.log("This is data logging");
     console.log(data);
   };
   return (
@@ -82,12 +84,17 @@ const ProductForm = () => {
               <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
                 <CategoriesSelect
                   setCatagories={setCatagories}
+                  formHook={formHook}
                   catagories={catagories}
                 />
               </Box>
               {/* Sub Catagories */}
               <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
-                <SubCatagories catagories={catagories} />
+                <SubCategory
+                  formHook={formHook}
+                  catagories={catagories}
+                  setCatagories={setCatagories}
+                />
               </Box>
             </Stack>
           </FormCardItem>

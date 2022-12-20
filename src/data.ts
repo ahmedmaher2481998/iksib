@@ -1,3 +1,5 @@
+import { CategoryType } from "./shared/types";
+
 export const product = {
   product: {
     id: "1",
@@ -115,7 +117,7 @@ export const categories = [
       },
     ],
   },
-];
+] as CategoryType[];
 export const addOns = [
   {
     id: 1,

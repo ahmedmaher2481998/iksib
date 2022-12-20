@@ -9,8 +9,9 @@ import {
 } from "@mui/material";
 import React, { FC } from "react";
 import { categories as data } from "../data";
-type props = { catagories: string[] };
-const SubCatagories: FC<props> = ({ catagories }: props) => {
+import { formHookType } from "../shared/types";
+type props = { catagories: string[]; formHook: formHookType };
+const SubCatagories: FC<props> = ({ catagories, formHook }: props) => {
   const [subCatagories, setSubCatagories] = React.useState<string[]>([]);
   const handleCatagoriesChange = (
     event: SelectChangeEvent<typeof subCatagories>
@@ -63,9 +64,9 @@ const SubCatagories: FC<props> = ({ catagories }: props) => {
           placeholder="Select sub-category"
           MenuProps={{}}
         >
-          {catagories.map((id) => {
+          {/* {catagories.map((id) => {
             return <SubCategoryList id={id} />;
-          })}
+          })} */}
         </Select>
       </FormControl>
     </>
