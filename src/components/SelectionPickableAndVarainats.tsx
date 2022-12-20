@@ -82,7 +82,7 @@ const SelectionPickableAndVariants: FC<props> = ({ formHook }: props) => {
       </FormCard>
 
       {showHasVariants === true && <VariantsCard />}
-      {showHasVariants === false && <PricingComponent />}
+      {showHasVariants === false && <PricingComponent formHook={formHook} />}
     </>
   );
 };
