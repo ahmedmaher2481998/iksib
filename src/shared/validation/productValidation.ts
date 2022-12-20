@@ -7,6 +7,7 @@ const productValidationSchema = yup.object({
     .required("id is required"),
   dine_in: yup.boolean().default(false).notRequired(),
   pickable: yup.boolean().required("check pickup"),
+  has_varaiations: yup.boolean().required("please select an option"),
   title: yup.string().required("a Product need a title"),
   description: yup.string().required("please add description"),
   categories: yup.array().of(yup.string().max(2)).required(),

@@ -1,9 +1,13 @@
 import { InputLabel, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, { FC } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
-
-const TitleDescriptionCard = () => {
+import { formHookType, formValues } from "../shared/types";
+type props = {
+  formHook: formHookType;
+};
+const TitleDescriptionCard: FC<props> = ({ formHook }: props) => {
+  const { errors, register } = formHook;
   return (
     <FormCard>
       <FormCardItem size={{ xs: 12 }}>
@@ -11,6 +15,9 @@ const TitleDescriptionCard = () => {
           Title
         </InputLabel>
         <TextField
+          {...register("title")}
+          error={Boolean(errors.title)}
+          helperText={errors.title?.message}
           id="title"
           fullWidth
           variant="outlined"
@@ -24,6 +31,9 @@ const TitleDescriptionCard = () => {
           </InputLabel>
           <TextField
             id="description"
+            {...register("description")}
+            error={Boolean(errors.description)}
+            helperText={errors.description?.message}
             fullWidth
             variant="outlined"
             multiline

@@ -1,7 +1,5 @@
 import {
   Box,
-  Container,
-  IconButton,
   Stack,
   Typography,
   InputLabel,
@@ -16,13 +14,14 @@ import {
   Autocomplete,
   Button,
   ListItem,
+  FormHelperText,
 } from "@mui/material";
 import React, { useState } from "react";
 import { ArrowBack } from "@mui/icons-material";
 import FormHeader from "./FormHeader";
 import { FormCard, FormCardItem } from "./FormCard";
 import { productValidationResolver } from "../shared/validation/productValidation";
-import { useForm } from "react-hook-form";
+import { FieldErrorsImpl, useForm, UseFormRegister } from "react-hook-form";
 import { categories as categoriesData } from "../data";
 import SubCatagories from "./SubCatogries";
 import TitleDescriptionCard from "./TitleDescriptionCard";
@@ -30,22 +29,13 @@ import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
 import AddonsCard from "./AddonsCard";
 import VariantsCard from "./VariantsCard";
+import { formHookType, formValues } from "../shared/types";
+import SelectionPickableAndVariants from "./SelectionPickableAndVarainats";
 
-type formValues = {
-  id: number;
-  dine_in: boolean;
-  pickable: boolean;
-  has_varaiations: boolean;
-  title: string;
-  description: string;
-  categories: string[];
-  addons: string[];
-  //   attributes: { name: string; values: string[] }[];
-};
 const ProductForm = () => {
   const [catagories, setCatagories] = useState<string[]>([]);
-  const [pickable, setPickable] = useState<1 | 0>();
-  const [hasVariants, setHasVariants] = useState<1 | 0>();
+  const [pickable, setPickable] = useState<"true" | "false" | "">("");
+  const [hasVariants, setHasVariants] = useState<"true" | "false" | "">("");
   const {
     formState: { errors },
     handleSubmit,
@@ -55,7 +45,9 @@ const ProductForm = () => {
     resolver: productValidationResolver,
   });
   const formHook = { register, errors };
+
   const handleProductSubmit = (data: formValues) => {
+    console.clear();
     console.log(data);
   };
   return (
@@ -67,7 +59,6 @@ const ProductForm = () => {
       display={"flex"}
       onSubmit={handleSubmit(handleProductSubmit)}
       component={"form"}
-      //   bgcolor={colors.amber[100]}
     >
       <Box
         flexDirection={"column"}
@@ -80,12 +71,11 @@ const ProductForm = () => {
           },
         }}
         display="flex"
-        // bgcolor={colors.green[200]}
         gap={3}
       >
         <FormHeader title="Add Product" />
         <MediaCard />
-        <TitleDescriptionCard />
+        <TitleDescriptionCard formHook={formHook} />
         <FormCard>
           <FormCardItem size={{ xs: 12 }}>
             <Stack width={"100%"} direction="row" spacing={1}>
@@ -103,58 +93,7 @@ const ProductForm = () => {
           </FormCardItem>
         </FormCard>
         <AddonsCard />
-        <FormCard>
-          <FormCardItem size={{ xs: 12 }}>
-            <Stack sx={{ width: "100%" }} spacing={1} direction="column" p={1}>
-              <Box
-                display={"flex"}
-                justifyContent="space-between"
-                alignItems={"center"}
-              >
-                <InputLabel htmlFor="pickable">
-                  Available for pickup ?{" "}
-                </InputLabel>
-                <Select
-                  id="pickable"
-                  value={pickable}
-                  onChange={(event: SelectChangeEvent<typeof pickable>) => {
-                    const {
-                      target: { value },
-                    } = event;
-                    setPickable(value);
-                  }}
-                >
-                  <MenuItem value={1}>yes</MenuItem>
-                  <MenuItem value={0}>no</MenuItem>
-                </Select>
-                {/*  */}
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent="space-between"
-                alignItems={"center"}
-              >
-                <InputLabel>Does this product have variants?</InputLabel>
-                <Select
-                  id="pickable"
-                  //   error
-                  value={hasVariants}
-                  onChange={(event: SelectChangeEvent<typeof hasVariants>) => {
-                    const {
-                      target: { value },
-                    } = event;
-                    Number(value);
-                    setHasVariants(value && value);
-                  }}
-                >
-                  <MenuItem value={1}>yes</MenuItem>
-                  <MenuItem value={0}>no</MenuItem>
-                </Select>
-              </Box>
-            </Stack>
-          </FormCardItem>
-        </FormCard>
-        {Boolean(hasVariants) ? <VariantsCard /> : null}
+        <SelectionPickableAndVariants formHook={formHook} />
         <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
           <Button
             variant="contained"
