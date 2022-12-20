@@ -50,7 +50,9 @@ const ProductForm = () => {
   } = useForm<formValues>({
     resolver: productValidationResolver,
   });
-
+  const handleProductSubmit = (data: formValues) => {
+    console.log(data);
+  };
   return (
     <Box
       justifyContent={"center"}
@@ -58,6 +60,7 @@ const ProductForm = () => {
       pt={10}
       width="100%"
       display={"flex"}
+      onSubmit={handleSubmit(handleProductSubmit)}
       component={"form"}
       //   bgcolor={colors.amber[100]}
     >

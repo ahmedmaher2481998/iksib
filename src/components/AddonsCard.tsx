@@ -18,8 +18,20 @@ const AddonsCard = () => {
   const [lastSelected, setLastSelected] = useState<typeof testValue | null>(
     null
   );
-  const [inputValue, setInputValue] = React.useState("");
+  const [options, setOptions] = useState(
+    addOns.map((a) => {
+      const b = { ...a, label: "" };
+      b.label = a.name;
+      return b;
+    })
+  );
   const [selectedAddons, setSelectedAddons] = useState<number[]>([]);
+  useEffect(() => {
+    options.map((addon) => {
+      if (!selectedAddons.includes(addon.id)) return addon;
+    });
+  }, [selectedAddons]);
+  const [inputValue, setInputValue] = React.useState("");
   useEffect(() => {}, [lastSelected]);
   const testValue = {
     label: "",
@@ -46,11 +58,7 @@ const AddonsCard = () => {
             }}
             //   disablePortal
             id="combo-box-demo"
-            options={addOns.map((a) => {
-              const b = { ...a, label: "" };
-              b.label = a.name;
-              return b;
-            })}
+            options={options}
             sx={{ width: 300 }}
             renderInput={(params) => {
               return <TextField {...params} placeholder="search Addons" />;
@@ -130,7 +138,11 @@ const AddonsCard = () => {
                       const newSelected = selectedAddons.filter(
                         (id) => id === addon.id
                       );
-                      if (newSelected.includes(addon.id)) setSelectedAddons([]);
+                      if (
+                        newSelected.includes(addon.id) &&
+                        newSelected.indexOf(addon.id) === 0
+                      )
+                        setSelectedAddons([]);
                       else setSelectedAddons(newSelected);
                       console.log(
                         "🚀 ~ file: AddonsCard.tsx:134 ~ {addOns.map ~ newSelected",
