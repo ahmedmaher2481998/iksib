@@ -25,18 +25,6 @@ const CategoriesSelect: FC<props> = ({
   formHook,
 }: props) => {
   const { control, errors, getValues, register, setValue } = formHook;
-  // const handleCatagoriesChange = (
-  //   event: SelectChangeEvent<typeof catagories>
-  // ) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   console.log(value);
-  //   setCatagories(
-  //     // On autofill we get a stringified value.
-  //     typeof value === "string" ? value.split(",") : value
-  //   );
-  // };
 
   return (
     <>
@@ -51,10 +39,7 @@ const CategoriesSelect: FC<props> = ({
             fieldState: { isTouched },
           }) => {
             return (
-              <FormControl>
-                <FormHelperText>
-                  {isTouched && errors.categories?.message}
-                </FormHelperText>
+              <FormControl error={Boolean(errors.categories)}>
                 <Select
                   multiple
                   error={Boolean(errors.categories)}
@@ -64,11 +49,6 @@ const CategoriesSelect: FC<props> = ({
                     setValue("categories", e.target.value);
                   }}
                   renderValue={(selected) => {
-                    console.log(
-                      "🚀 ~ file: CategoriesSelect.tsx:56 ~ selected",
-                      selected
-                    );
-
                     const selectedCats = categoriesData.filter((item) =>
                       selected.includes(item.category_id)
                     );
@@ -91,6 +71,7 @@ const CategoriesSelect: FC<props> = ({
                     </MenuItem>
                   ))}
                 </Select>
+                <FormHelperText>{errors.categories?.message}</FormHelperText>
               </FormControl>
             );
           }}

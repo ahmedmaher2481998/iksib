@@ -7,79 +7,73 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Controller } from "react-hook-form";
-import { categories as categoriesData } from "../data";
+import { categories, categories as categoriesData } from "../data";
 import { CategoryType, formHookType, subCategoryType } from "../shared/types";
 import { getCheckedBoolean } from "../shared/utils";
+
 type props = {
   catagories: number[];
-  setCatagories: React.Dispatch<React.SetStateAction<number[]>>;
+
   formHook: formHookType;
 };
 
-const SubCategory: FC<props> = ({
-  catagories,
-  setCatagories,
-  formHook,
-}: props) => {
-  const { control, getValues, register, setValue } = formHook;
+const SubCategory: FC<props> = ({ catagories, formHook }: props) => {
+  const { control, getValues, setValue } = formHook;
+  const [subCategory, setSubCategory] = useState<number[]>([]);
 
   return (
     <>
       <InputLabel sx={{ color: "black", pl: 1 }}>Sub-catagories</InputLabel>
       <FormControl sx={{ m: 1, width: "100%" }}>
         <Controller
-          name="categories"
+          name="sub_categories"
           control={control}
           render={({
             formState: { errors },
             field: { onChange, value, name },
             fieldState: { isTouched },
           }) => {
+            console.log(value);
             return (
-              <FormControl>
-                <FormHelperText>
-                  {isTouched && errors.categories?.message}
-                </FormHelperText>
+              <FormControl error={Boolean(errors.sub_categories)}>
                 <Select
                   multiple
-                  error={Boolean(errors.categories)}
-                  value={catagories}
+                  error={Boolean(errors.sub_categories)}
+                  value={subCategory}
                   onChange={(e: any) => {
-                    setCatagories((old) => [
-                      ...old,
-                      ...(e.target.value as number[]),
-                    ]);
-                    setValue("categories", e.target.value);
+                    setSubCategory((old) => e.target.value as number[]);
+                    setValue("sub_categories", e.target.value);
                   }}
                   renderValue={(selected) => {
-                    console.log(
-                      "🚀 ~ file: CategoriesSelect.tsx:56 ~ selected",
-                      selected
-                    );
+                    const subs = SubCategoryList(catagories);
+                    const selectedSubs = subs.map((sub) => {
+                      if (selected?.includes(sub.category_id)) {
+                        return sub.category_name;
+                      }
+                    });
 
-                    const selectedCats = categoriesData.filter((item) =>
-                      selected.includes(item.category_id)
-                    );
-                    return selectedCats.map((i) => i.category_name).join(",");
+                    return selectedSubs?.join(",");
                   }}
-                  placeholder="Select category"
-                  MenuProps={{}}
+                  placeholder="Select Sub-category"
                 >
                   {SubCategoryList(catagories).map((sub) => {
-                    return <SubCategoryItem sub={sub} value={value} />;
+                    return (
+                      <MenuItem key={sub.category_id} value={sub.category_id}>
+                        <Checkbox
+                          checked={Boolean(
+                            getCheckedBoolean(value, sub.category_id)
+                          )}
+                        />
+                        <ListItemText primary={sub.category_name} />
+                      </MenuItem>
+                    );
                   })}
-                  {/* {categoriesData.map((category) => {
-                    if(catagories?.includes(category.category_id)){
-                        const subs=category.sub_categories
-return subs.map(sub=>{
-   return  
-    })
-
-})
-          } */}
                 </Select>
+                <FormHelperText>
+                  {errors.sub_categories?.message}
+                </FormHelperText>
               </FormControl>
             );
           }}
@@ -100,14 +94,11 @@ const SubCategoryList = (categories: number[]) => {
 };
 type subCategoryProps = {
   sub: subCategoryType;
-  value: number[];
+  values: number[];
 };
-const SubCategoryItem = ({ sub, value }: subCategoryProps) => {
-  return (
-    <MenuItem key={sub.category_id} value={sub.category_id as number}>
-      <Checkbox checked={Boolean(getCheckedBoolean(value, sub.category_id))} />
-      <ListItemText primary={sub.category_name} />
-    </MenuItem>
-  );
-};
+// const SubCategoryItem = ({ sub, values }: subCategoryProps) => {
+//   return (
+
+//   );
+// };
 export default SubCategory;

@@ -14,6 +14,7 @@ export type formValues = {
   title: string;
   description: string;
   categories: number[];
+  sub_categories: number[];
   addons: string[];
   //   attributes: { name: string; values: string[] }[];
 };

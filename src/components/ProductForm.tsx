@@ -23,7 +23,6 @@ import { FormCard, FormCardItem } from "./FormCard";
 import { productValidationResolver } from "../shared/validation/productValidation";
 import { useForm } from "react-hook-form";
 import { categories as categoriesData } from "../data";
-import SubCatagories from "./SubCatogries";
 import TitleDescriptionCard from "./TitleDescriptionCard";
 import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
@@ -45,9 +44,17 @@ const ProductForm = () => {
     setValue,
   } = useForm<formValues>({
     resolver: productValidationResolver,
+    defaultValues: {
+      addons: [],
+      categories: [],
+      description: "",
+      dine_in: false,
+      title: "",
+      sub_categories: [],
+    },
   });
   const formHook = { setValue, register, errors, getValues, control };
-
+  // console.log("Values", getValues(), "Errors:", errors);
   const handleProductSubmit = (data: formValues) => {
     console.log("This is data logging");
     console.log(data);
@@ -90,11 +97,7 @@ const ProductForm = () => {
               </Box>
               {/* Sub Catagories */}
               <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
-                <SubCategory
-                  formHook={formHook}
-                  catagories={catagories}
-                  setCatagories={setCatagories}
-                />
+                <SubCategory formHook={formHook} catagories={catagories} />
               </Box>
             </Stack>
           </FormCardItem>

@@ -11,6 +11,11 @@ const productValidationSchema = yup.object({
   title: yup.string().required("a Product need a title"),
   description: yup.string().required("please add description"),
   categories: yup.array().of(yup.number()).required("Please select catagories"),
+  sub_categories: yup
+    .array()
+    .of(yup.number())
+    .required("Please select Sub-catagories"),
+
   addons: yup.array().of(yup.string()).required(),
 });
 export const productValidationResolver = yupResolver(productValidationSchema);
