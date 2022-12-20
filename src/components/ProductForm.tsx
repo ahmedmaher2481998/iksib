@@ -54,7 +54,7 @@ const ProductForm = () => {
     },
   });
   const formHook = { setValue, register, errors, getValues, control };
-  // console.log("Values", getValues(), "Errors:", errors);
+  console.log("Values", getValues(), "Errors:", errors);
   const handleProductSubmit = (data: formValues) => {
     console.log("This is data logging");
     console.log(data);
@@ -102,7 +102,7 @@ const ProductForm = () => {
             </Stack>
           </FormCardItem>
         </FormCard>
-        <AddonsCard />
+        <AddonsCard formHook={formHook} />
         <SelectionPickableAndVariants formHook={formHook} />
         <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
           <Button

@@ -9,36 +9,43 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
 import { addOns } from "../data";
 import { Box } from "@mui/system";
 import { Clear } from "@mui/icons-material";
-const AddonsCard = () => {
-  const [lastSelected, setLastSelected] = useState<typeof testValue | null>(
-    null
-  );
-  const [options, setOptions] = useState(
-    addOns.map((a) => {
-      const b = { ...a, label: "" };
-      b.label = a.name;
-      return b;
-    })
-  );
-  const [selectedAddons, setSelectedAddons] = useState<number[]>([]);
-  useEffect(() => {
-    options.map((addon) => {
-      if (!selectedAddons.includes(addon.id)) return addon;
-    });
-  }, [selectedAddons]);
-  const [inputValue, setInputValue] = React.useState("");
-  useEffect(() => {}, [lastSelected]);
-  const testValue = {
-    label: "",
-    id: 0,
-    price: 0,
-    name: "",
-  };
+import { Controller } from "react-hook-form";
+import { addonType, formHookType } from "../shared/types";
+type props = {
+  formHook: formHookType;
+};
+const AddonsCard: FC<props> = ({ formHook }: props) => {
+  const { getValues, control, errors, setValue } = formHook;
+  const selectedAddons = getValues().addons;
+  // const [lastSelected, setLastSelected] = useState<typeof testValue | null>(
+  //   null
+  // );
+  // const [options, setOptions] = useState(
+  //   addOns.map((a) => {
+  //     const b = { ...a, label: "" };
+  //     b.label = a.name;
+  //     return b;
+  //   })
+  // );
+  // const [selectedAddons, setSelectedAddons] = useState<number[]>([]);
+  // useEffect(() => {
+  //   options.map((addon) => {
+  //     if (!selectedAddons.includes(addon.id)) return addon;
+  //   });
+  // }, [selectedAddons]);
+  // const [inputValue, setInputValue] = React.useState("");
+  // useEffect(() => {}, [lastSelected]);
+  // const testValue = {
+  //   label: "",
+  //   id: 0,
+  //   price: 0,
+  //   name: "",
+  // };
   return (
     <FormCard>
       <FormCardItem size={{ xs: 12 }}>
@@ -46,7 +53,41 @@ const AddonsCard = () => {
           <InputLabel sx={{ color: "black", mb: 1, width: "100%" }}>
             Addons
           </InputLabel>
-          <Autocomplete
+          {/*  */}
+          <>
+            <Controller
+              name="addons"
+              control={control}
+              render={({
+                fieldState: { error },
+                formState: {},
+                field: { onChange },
+              }) => (
+                <Autocomplete
+                  multiple
+                  options={addOns}
+                  getOptionLabel={(addon: addonType) => addon.name}
+                  // renderOption={(option: addonType) => (
+                  //   <ListItem>
+                  //     <ListItemText>{option.name}</ListItemText>
+                  //   </ListItem>
+                  // )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Choose a country"
+                      variant="outlined"
+                    />
+                  )}
+                  onChange={(e, data) => onChange(data)}
+                  // {...props}
+                />
+              )}
+              // onChange={([, data]) => data}
+            />
+          </>
+          {/*  */}
+          {/* <Autocomplete
             value={lastSelected}
             fullWidth
             onChange={(e: any, value: any) => {
@@ -63,43 +104,7 @@ const AddonsCard = () => {
             renderInput={(params) => {
               return <TextField {...params} placeholder="search Addons" />;
             }}
-          />
-          {/* <Autocomplete
-          //   value={""}
-          //   onChange={(event: any, newValue: string | null) => {
-          //     console.log(
-          //       "🚀 ~ file: AddonsCard.tsx:15 ~ AddonsCard ~ newValue",
-          //       newValue
-          //     );
-          //     const selected = addOns.find((addon) => addon.name === newValue);
-          //     const newSelect = selectedAddons ? [...selectedAddons] : [];
-          //     if (selected) {
-          //       newSelect.push(selected?.id);
-          //       setSelectedAddons(newSelect);
-          //     }
-
-          //     // setAddons((v) => [...v, newValue]);
-          //   }}
-          //   inputValue={inputValue}
-          onInputChange={(event, newInputValue) => {
-            setInputValue(newInputValue);
-          }}
-          options={addOns.map((a) => {
-            if (selectedAddons && !selectedAddons.includes(a.id)) {
-              const b = { ...a, label: "" };
-              b.label = a.name;
-              return b;
-            }
-          })}
-          sx={{ width: 300 }}
-          renderInput={(params) => {
-            console.log(
-              "🚀 ~ file: AddonsCard.tsx:32 ~ AddonsCard ~ params",
-              params
-            );
-            return <TextField {...params} placeholder="Search addOns" />;
-          }}
-        /> */}
+          /> */}
         </Box>
       </FormCardItem>
       <FormCardItem size={{ xs: 12 }}>
@@ -116,7 +121,54 @@ const AddonsCard = () => {
               Saved Addons:{" "}
             </Typography>
           )}
-          {addOns.map((addon) => {
+          {getValues().addons?.map((addon) => {
+            return (
+              <>
+                <ListItem
+                  key={addon.id}
+                  sx={{
+                    mt: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    px: 2,
+                    borderRadius: 2,
+                    bgcolor: colors.grey[100],
+                  }}
+                >
+                  <ListItemText>{addon.name}</ListItemText>
+                  <ListItemIcon
+                    sx={{ cursor: "pointer" }}
+                    onClick={(e) => {
+                      setValue(
+                        "addons",
+                        getValues().addons.filter((item) => {
+                          if (item.id === addon.id) return false;
+                        })
+                      );
+                      // const newSelected = selectedAddons.filter(
+                      //   (id) => id === addon.id
+                      // );
+                      // if (
+                      //   newSelected.includes(addon.id) &&
+                      //   newSelected.indexOf(addon.id) === 0
+                      // )
+                      //   setSelectedAddons([]);
+                      // else setSelectedAddons(newSelected);
+                      // console.log(
+                      //   "🚀 ~ file: AddonsCard.tsx:134 ~ {addOns.map ~ newSelected",
+                      //   newSelected,
+                      //   addon.id === newSelected[0]
+                      // );
+                    }}
+                  >
+                    <Clear />
+                  </ListItemIcon>
+                </ListItem>
+              </>
+            );
+          })}
+          {/* {addOns.map((addon) => {
             if (selectedAddons.includes(addon.id)) {
               return (
                 <ListItem
@@ -135,29 +187,20 @@ const AddonsCard = () => {
                   <ListItemIcon
                     sx={{ cursor: "pointer" }}
                     onClick={(e) => {
-                      const newSelected = selectedAddons.filter(
-                        (id) => id === addon.id
-                      );
-                      if (
-                        newSelected.includes(addon.id) &&
-                        newSelected.indexOf(addon.id) === 0
-                      )
-                        setSelectedAddons([]);
-                      else setSelectedAddons(newSelected);
-                      console.log(
-                        "🚀 ~ file: AddonsCard.tsx:134 ~ {addOns.map ~ newSelected",
-                        newSelected,
-                        addon.id === newSelected[0]
-                      );
-
-                      //   setSelectedAddons((old) =>
-                      //     old.filter((id, idx) => {
-                      //       if (id === addon.id) {
-                      //         return true;
-                      //         if (idx === 0) return true;
-                      //       }
-                      //     })
-                      //   );
+                      // const newSelected = selectedAddons.filter(
+                      //   (id) => id === addon.id
+                      // );
+                      // if (
+                      //   newSelected.includes(addon.id) &&
+                      //   newSelected.indexOf(addon.id) === 0
+                      // )
+                      //   setSelectedAddons([]);
+                      // else setSelectedAddons(newSelected);
+                      // console.log(
+                      //   "🚀 ~ file: AddonsCard.tsx:134 ~ {addOns.map ~ newSelected",
+                      //   newSelected,
+                      //   addon.id === newSelected[0]
+                      // );
                     }}
                   >
                     <Clear />
@@ -167,7 +210,7 @@ const AddonsCard = () => {
             } else {
               return null;
             }
-          })}
+          })} */}
         </List>
       </FormCardItem>
     </FormCard>

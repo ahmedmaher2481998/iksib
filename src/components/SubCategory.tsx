@@ -35,7 +35,6 @@ const SubCategory: FC<props> = ({ catagories, formHook }: props) => {
             field: { onChange, value, name },
             fieldState: { isTouched },
           }) => {
-            console.log(value);
             return (
               <FormControl error={Boolean(errors.sub_categories)}>
                 <Select

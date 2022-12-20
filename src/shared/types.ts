@@ -15,7 +15,7 @@ export type formValues = {
   description: string;
   categories: number[];
   sub_categories: number[];
-  addons: string[];
+  addons: addonType[];
   //   attributes: { name: string; values: string[] }[];
 };
 export type formHookType = {
@@ -35,4 +35,9 @@ export type CategoryType = {
   category_name: string;
   parent_id: null | number;
   sub_categories: subCategoryType[];
+};
+export type addonType = {
+  id: number;
+  price: number;
+  name: string;
 };

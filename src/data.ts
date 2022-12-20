@@ -1,4 +1,4 @@
-import { CategoryType } from "./shared/types";
+import { addonType, CategoryType } from "./shared/types";
 
 export const product = {
   product: {
@@ -129,7 +129,7 @@ export const addOns = [
     price: 5.0,
     name: "Extra Ketchup",
   },
-];
+] as addonType[];
 export const branches = [
   {
     branch_id: 1,
