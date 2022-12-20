@@ -15,8 +15,9 @@ import {
   SelectChangeEvent,
   Autocomplete,
   Button,
+  ListItem,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { ArrowBack } from "@mui/icons-material";
 import FormHeader from "./FormHeader";
 import { FormCard, FormCardItem } from "./FormCard";
@@ -41,7 +42,9 @@ type formValues = {
   attributes: { name: string; values: string[] }[];
 };
 const ProductForm = () => {
-  const [catagories, setCatagories] = React.useState<string[]>([]);
+  const [catagories, setCatagories] = useState<string[]>([]);
+  const [pickable, setPickable] = useState<1 | 0>();
+  const [hasVariants, setHasVariants] = useState<1 | 0>();
   const {
     formState: { errors },
     handleSubmit,
@@ -98,6 +101,55 @@ const ProductForm = () => {
           </FormCardItem>
         </FormCard>
         <AddonsCard />
+        <FormCard>
+          <FormCardItem size={{ xs: 12 }}>
+            <Stack sx={{ width: "100%" }} spacing={1} direction="column" p={1}>
+              <Box
+                display={"flex"}
+                justifyContent="space-between"
+                alignItems={"center"}
+              >
+                <InputLabel htmlFor="pickable">
+                  Available for pickup ?{" "}
+                </InputLabel>
+                <Select
+                  id="pickable"
+                  value={pickable}
+                  onChange={(event: SelectChangeEvent<typeof pickable>) => {
+                    const {
+                      target: { value },
+                    } = event;
+                    setPickable(value);
+                  }}
+                >
+                  <MenuItem value={1}>yes</MenuItem>
+                  <MenuItem value={0}>no</MenuItem>
+                </Select>
+                {/*  */}
+              </Box>
+              <Box
+                display={"flex"}
+                justifyContent="space-between"
+                alignItems={"center"}
+              >
+                <InputLabel>Does this product have variants?</InputLabel>
+                <Select
+                  id="pickable"
+                  value={hasVariants}
+                  onChange={(event: SelectChangeEvent<typeof hasVariants>) => {
+                    const {
+                      target: { value },
+                    } = event;
+                    setHasVariants(value);
+                  }}
+                >
+                  <MenuItem value={1}>yes</MenuItem>
+                  <MenuItem value={0}>no</MenuItem>
+                </Select>
+              </Box>
+            </Stack>
+          </FormCardItem>
+        </FormCard>
         <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
           <Button
             variant="contained"

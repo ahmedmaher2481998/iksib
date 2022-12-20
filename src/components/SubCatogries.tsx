@@ -37,7 +37,7 @@ const SubCatagories: FC<props> = ({ catagories }: props) => {
         </MenuItem>
       );
     });
-    if (list?.length) return list;
+    if (Boolean(list?.length)) return list;
     else return null;
   };
   return (
@@ -64,11 +64,7 @@ const SubCatagories: FC<props> = ({ catagories }: props) => {
           MenuProps={{}}
         >
           {catagories.map((id) => {
-            return (
-              <div>
-                <SubCategoryList id={id} />;
-              </div>
-            );
+            return <SubCategoryList id={id} />;
           })}
         </Select>
       </FormControl>
