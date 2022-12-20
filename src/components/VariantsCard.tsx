@@ -1,8 +1,11 @@
-import { Add } from "@mui/icons-material";
+import { Add, Close } from "@mui/icons-material";
 import {
+  Chip,
   colors,
   IconButton,
   InputLabel,
+  ListItem,
+  ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
@@ -76,6 +79,36 @@ const VariantsCard = () => {
               <Add />
             </IconButton>
           </Box>
+        </Stack>
+        <Box sx={{ p: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
+          <Chip label="Red" onDelete={() => {}} />
+          <Chip label="Blue" onDelete={() => {}} />
+          <Chip label="Green" onDelete={() => {}} />
+          <Chip label="Black" onDelete={() => {}} />
+          <Chip label="White" onDelete={() => {}} />
+          <Chip label="Brown" onDelete={() => {}} />
+          <Chip label="Pink" onDelete={() => {}} />
+        </Box>
+      </FormCardItem>
+      <FormCardItem size={{ xs: 12 }}>
+        <Typography
+          py={1}
+          fontSize={18}
+          sx={{ borderTop: "2px solid", borderTopColor: colors.grey[200] }}
+        >
+          Saved Variants
+        </Typography>
+        <Stack>
+          <ListItem
+            sx={{ bgcolor: colors.grey[200] }}
+            secondaryAction={
+              <IconButton edge="end" aria-label="delete">
+                <Close sx={{ color: colors.red[400] }} />
+              </IconButton>
+            }
+          >
+            <ListItemText primary="Colors : Red,Blue,Green,Black,White,Brown,Pink," />
+          </ListItem>
         </Stack>
       </FormCardItem>
     </FormCard>
