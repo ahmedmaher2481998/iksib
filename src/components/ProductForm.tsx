@@ -39,7 +39,7 @@ type formValues = {
   description: string;
   categories: string[];
   addons: string[];
-  attributes: { name: string; values: string[] }[];
+  //   attributes: { name: string; values: string[] }[];
 };
 const ProductForm = () => {
   const [catagories, setCatagories] = useState<string[]>([]);
@@ -53,6 +53,7 @@ const ProductForm = () => {
   } = useForm<formValues>({
     resolver: productValidationResolver,
   });
+  const formHook = { register, errors };
   const handleProductSubmit = (data: formValues) => {
     console.log(data);
   };
@@ -135,12 +136,14 @@ const ProductForm = () => {
                 <InputLabel>Does this product have variants?</InputLabel>
                 <Select
                   id="pickable"
+                  //   error
                   value={hasVariants}
                   onChange={(event: SelectChangeEvent<typeof hasVariants>) => {
                     const {
                       target: { value },
                     } = event;
-                    setHasVariants(value);
+                    Number(value);
+                    setHasVariants(value && value);
                   }}
                 >
                   <MenuItem value={1}>yes</MenuItem>
