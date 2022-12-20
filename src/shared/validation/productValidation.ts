@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { addonType } from "../types";
 import { yupResolver } from "@hookform/resolvers/yup";
 const productValidationSchema = yup.object({
   id: yup
@@ -16,9 +17,24 @@ const productValidationSchema = yup.object({
     .of(yup.number())
     .required("Please select Sub-catagories"),
 
-  addons: yup.array().of(yup.string()).required(),
+  addons: yup
+    .array()
+    .of(
+      yup.object({
+        id: yup.number().required("invalid Addons"),
+        price: yup.number().required("invalid Addons"),
+        name: yup.string().required("invalid Addons"),
+      })
+    )
+    .required(),
 });
 export const productValidationResolver = yupResolver(productValidationSchema);
+export const InitialFormValues = {
+  addons: [],
+  description: "",
+  dine_in: false,
+  title: "",
+};
 /*
 id: number;
   dine_in: boolean;

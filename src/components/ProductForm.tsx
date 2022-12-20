@@ -20,7 +20,10 @@ import React, { useState } from "react";
 import { ArrowBack } from "@mui/icons-material";
 import FormHeader from "./FormHeader";
 import { FormCard, FormCardItem } from "./FormCard";
-import { productValidationResolver } from "../shared/validation/productValidation";
+import {
+  InitialFormValues,
+  productValidationResolver,
+} from "../shared/validation/productValidation";
 import { useForm } from "react-hook-form";
 import { categories as categoriesData } from "../data";
 import TitleDescriptionCard from "./TitleDescriptionCard";
@@ -44,14 +47,7 @@ const ProductForm = () => {
     setValue,
   } = useForm<formValues>({
     resolver: productValidationResolver,
-    defaultValues: {
-      addons: [],
-      categories: [],
-      description: "",
-      dine_in: false,
-      title: "",
-      sub_categories: [],
-    },
+    defaultValues: InitialFormValues,
   });
   const formHook = { setValue, register, errors, getValues, control };
   console.log("Values", getValues(), "Errors:", errors);
