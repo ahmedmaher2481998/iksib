@@ -29,6 +29,7 @@ import TitleDescriptionCard from "./TitleDescriptionCard";
 import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
 import AddonsCard from "./AddonsCard";
+import VariantsCard from "./VariantsCard";
 
 type formValues = {
   id: number;
@@ -153,6 +154,7 @@ const ProductForm = () => {
             </Stack>
           </FormCardItem>
         </FormCard>
+        {Boolean(hasVariants) ? <VariantsCard /> : null}
         <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
           <Button
             variant="contained"
