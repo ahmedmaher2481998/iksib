@@ -4,12 +4,13 @@ import React, { FC, useState } from "react";
 import VariantsCard from "./VariantsCard";
 import { FormCard, FormCardItem } from "./FormCard";
 import { formHookType, formValues } from "../shared/types";
+import PricingComponent from "./PricingComponent";
 type props = {
   formHook: formHookType;
 };
 const SelectionPickableAndVariants: FC<props> = ({ formHook }: props) => {
   const { errors, register } = formHook;
-  const [showHasVariants, setShowHasVariants] = useState<Boolean>(false);
+  const [showHasVariants, setShowHasVariants] = useState<Boolean | null>(null);
   return (
     <>
       <FormCard>
@@ -79,7 +80,9 @@ const SelectionPickableAndVariants: FC<props> = ({ formHook }: props) => {
           </Stack>
         </FormCardItem>
       </FormCard>
-      {showHasVariants ? <VariantsCard /> : null}
+
+      {showHasVariants === true && <VariantsCard />}
+      {showHasVariants === false && <PricingComponent />}
     </>
   );
 };
