@@ -5,6 +5,7 @@ import {
   colors,
   createFilterOptions,
   IconButton,
+  Input,
   InputLabel,
   ListItem,
   ListItemText,
@@ -20,13 +21,66 @@ type props = {
   formHook: formHookType;
 };
 const filter = createFilterOptions<variantOption>();
-
+const getOptionFromValue = ({
+  options,
+  value,
+}: {
+  options: variantOption[];
+  value: String;
+}) => {
+  return options.find((opt) => opt.name === value);
+};
 const VariantsCard: FC<props> = ({ formHook }: props) => {
-  // const [options, setOptions] = useState<variantOption[]>([]);
-  // const [selectedOption, setSelectedOption] = useState<variantOption>();
-  // const [typedValue, setTypedValue] = useState("");
-  const [option, setOption] = useState<string>("");
-  const [value, setValue] = useState<string>("");
+  const { control, setValue } = formHook;
+  const [options, setOptions] = useState<variantOption[]>([]);
+  const [selectedOption, setSelectedOption] = useState<variantOption>();
+  const [variantValue, setVariantValue] = useState("");
+  const [optionInputValue, setOptionInputValue] = useState("");
+  const handlingAddedValues = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log("🚀 ~ file: VariantsCard.tsx:28 ~ options", options);
+    console.log(
+      "🚀 ~ file: VariantsCard.tsx:34 ~ optionInputValue",
+      optionInputValue
+    );
+    console.log("🚀 ~ file: VariantsCard.tsx:32 ~ variantValue", variantValue);
+    console.log(
+      "🚀 ~ file: VariantsCard.tsx:30 ~ selectedOption",
+      selectedOption
+    );
+
+    // make sure to get the current typed value from the autoComplete
+    // optionInputValue
+    // check if option exists /
+    // yes => check if there's variant value with the same current variant value/
+    // yes=> don't add value prompt existing value/
+    // no => add variant value to the the option array of values
+    //no => add option && add variant value  if not ====''
+    if (optionInputValue !== "") {
+      const option = getOptionFromValue({ options, value: optionInputValue });
+
+      // option already exist
+      if (option) {
+        // entering new variant value if not empty nor exist in values array
+        if (
+          variantValue !== "" &&
+          !option?.values?.some((val) => val === variantValue)
+        ) {
+          option?.values?.push(variantValue);
+          setOptions((old) => [...old, { ...option }]);
+        }
+      } else {
+        if (options.length >= 4) return;
+        const newOption: variantOption = { name: optionInputValue };
+        if (variantValue !== "") newOption.values = [variantValue];
+        setOptions((old) => [...old, { ...newOption }]);
+      }
+    }
+  };
+  // Test Values
+  // const [option, setOption] = useState<string>("");
+  // const [value, setValue] = useState<string>("");
   return (
     <FormCard>
       <FormCardItem size={{ xs: 12 }}>
@@ -39,9 +93,13 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
           Variants
         </Typography>
         <Controller
-          control={formHook.control}
+          control={control}
           name="attributes"
-          render={({ field: { value, onChange }, formState: { errors } }) => {
+          render={({
+            field: { value, onChange },
+            formState: { errors },
+            fieldState: {},
+          }) => {
             return (
               <>
                 <Stack direction={"row"} spacing={1} alignItems="center">
@@ -52,13 +110,40 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                         <Typography fontSize={14}>(size,color,etc)</Typography>
                       </Stack>
                     </InputLabel>
-                    <TextField placeholder="Option" variant="outlined" />
+                    {/* <TextField
+                      value={option}
+                      onChange={(e) => {
+                        const {
+                          target: { value: inputValue },
+                        } = e;
+                        setOption(inputValue);
+                      }}
+                      placeholder="Option"
+                      variant="outlined"
+                    /> */}
+                    <Autocomplete
+                      value={selectedOption}
+                      // freeSolo
+                      clearOnBlur={false}
+                      options={options.map((option) => option)}
+                      getOptionLabel={(opt: variantOption) => opt.name}
+                      renderInput={(params) => <TextField {...params} />}
+                      onChange={(e, v) => {
+                        console.log("changed", e.target, v);
+                        v && setSelectedOption(v);
+                      }}
+                      inputValue={optionInputValue}
+                      onInputChange={(event, newInputValue) => {
+                        console.log(newInputValue);
+                        setOptionInputValue(newInputValue);
+                      }}
+                    />
 
                     {/* <Autocomplete
                       value={selectedOption}
                       sx={{ p: 0 }}
                       onChange={(event, newValue) => {
-                        console.log(newValue);
+                        
                         if (typeof newValue === "string") {
                           setSelectedOption({
                             name: newValue,
@@ -85,9 +170,10 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                           (option) => inputValue === option.name
                         );
                         if (inputValue !== "" && !isExisting) {
+                          if (filtered.length > 4) return;
                           filtered.push({
                             inputValue,
-                            name: `Add "${inputValue}"`,
+                            name: `${inputValue}`,
                           });
                         }
 
@@ -112,7 +198,6 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                       renderOption={(props, option) => (
                         <li {...props}>{option.name}</li>
                       )}
-                      sx={{ width: 300 }}
                       freeSolo
                       renderInput={(params) => (
                         <TextField {...params} sx={{ py: 1 }} />
@@ -121,10 +206,16 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                   </Box>
                   <Box>
                     <InputLabel htmlFor="options">Values</InputLabel>
-                    <TextField placeholder="Value" variant="outlined" />
+                    <TextField
+                      value={variantValue}
+                      onChange={(e) => setVariantValue(e.target.value)}
+                      placeholder="Value"
+                      variant="outlined"
+                    />
                   </Box>
                   <Box height={"100%"}>
                     <IconButton
+                      onClick={handlingAddedValues}
                       sx={{
                         mt: 3,
                         ml: 2,
@@ -137,11 +228,11 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                   </Box>
                 </Stack>
                 <Box sx={{ p: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
-                  {value
-                    ?.find((v) => v.name === option)
-                    ?.values?.map((v) => (
-                      <Chip label={`${v}`} onDelete={() => {}} />
-                    ))}
+                  {/* FIXME */}
+                  {/* Render values selected  */}
+                  {selectedOption?.values?.map((v) => (
+                    <Chip label={`${v}`} onDelete={() => {}} />
+                  ))}
                   {/* <Chip label="Red" onDelete={() => {}} /> */}
                 </Box>
               </>

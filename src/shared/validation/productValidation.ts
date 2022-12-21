@@ -31,6 +31,7 @@ const productValidationSchema = yup.object({
     is: (value: boolean) => value === true,
     then: yup
       .array()
+      .max(4, "max 4 options per product")
       .of(
         yup.object({
           name: yup.string().required("invalid option name"),
@@ -67,14 +68,3 @@ export const InitialFormValues = {
   dine_in: false,
   title: "",
 };
-/*
-id: number;
-  dine_in: boolean;
-  pickable: boolean;
-  has_varaiations: boolean;
-  title: string;
-  description: string;
-  categories: string[];
-  addons: string[];
-  attributes: { name: string; values: string[] }[];
-*/
