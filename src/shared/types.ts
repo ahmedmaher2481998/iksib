@@ -16,7 +16,24 @@ export type formValues = {
   categories: number[];
   sub_categories: number[];
   addons: addonType[];
-  //   attributes: { name: string; values: string[] }[];
+  attributes?: variantOption[];
+  pricing: {
+    price: string;
+    salePrice: string;
+    costPerItem: string;
+    location: {
+      location1: string;
+      location2?: string;
+      location3?: string;
+      location4?: string;
+      location5?: string;
+    };
+    sku?: string;
+  };
+};
+export type variantOption = {
+  name: string;
+  values?: string[];
 };
 export type formHookType = {
   register: UseFormRegister<formValues>;

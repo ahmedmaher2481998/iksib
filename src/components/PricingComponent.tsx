@@ -3,11 +3,11 @@ import { Box, Stack } from "@mui/system";
 import React from "react";
 import { FormCard, FormCardItem } from "./FormCard";
 import { formHookType, formValues } from "../shared/types";
+import { Controller } from "react-hook-form";
 type props = {
   formHook: formHookType;
 };
 const PricingComponent = ({ formHook }: props) => {
-  const { errors, register } = formHook;
   return (
     <>
       <FormCard>
@@ -24,22 +24,62 @@ const PricingComponent = ({ formHook }: props) => {
           >
             <Box sx={{ width: "100%" }}>
               <InputLabel sx={{ fontSize: 16, pb: 0.5 }}>Price</InputLabel>
-              <TextField fullWidth placeholder="KWD 0.00" variant="outlined" />
+              <Controller
+                control={formHook.control}
+                name="pricing.price"
+                render={({
+                  field: { name, onChange, value },
+                  formState: { errors },
+                }) => (
+                  <TextField
+                    fullWidth
+                    error={Boolean(errors.pricing?.price)}
+                    helperText={errors.pricing?.price && ""}
+                    placeholder="KWD 0.00"
+                    variant="outlined"
+                  />
+                )}
+              />
             </Box>
             <Box sx={{ width: "100%" }}>
               <InputLabel sx={{ fontSize: 16, pb: 0.5 }}>Sale price</InputLabel>
-              <TextField fullWidth placeholder="KWD 0.00" variant="outlined" />
+              <Controller
+                control={formHook.control}
+                name="pricing.salePrice"
+                render={({
+                  field: { name, onChange, value },
+                  formState: { errors },
+                }) => (
+                  <TextField
+                    fullWidth
+                    onChange={onChange}
+                    error={Boolean(errors.pricing?.salePrice)}
+                    helperText={errors.pricing?.salePrice && ""}
+                    placeholder="KWD 0.00"
+                    variant="outlined"
+                  />
+                )}
+              />
             </Box>
           </Stack>
           <Box sx={{ width: "100%" }}>
             <InputLabel sx={{ fontSize: 16, pb: 0.5 }}>
               Cost per Item
             </InputLabel>
-            <TextField
-              fullWidth
-              placeholder="KWD 0.00"
-              helperText="Customer's won't see this"
-              variant="outlined"
+            <Controller
+              control={formHook.control}
+              name="pricing.salePrice"
+              render={({ formState: { errors } }) => (
+                <TextField
+                  error={Boolean(errors.pricing?.costPerItem)}
+                  fullWidth
+                  placeholder="KWD 0.00"
+                  helperText={
+                    errors.pricing?.costPerItem && "Customer's won't see this"
+                  }
+                  variant="outlined"
+                />
+              )}
             />
           </Box>
         </FormCardItem>
@@ -60,7 +100,20 @@ const PricingComponent = ({ formHook }: props) => {
               <InputLabel sx={{ fontSize: 16, pb: 0.5 }}>
                 SKU (Stock Keeping Unit)
               </InputLabel>
-              <TextField fullWidth placeholder="" variant="outlined" />
+
+              <Controller
+                control={formHook.control}
+                name="pricing.sku"
+                render={({ formState: { errors } }) => (
+                  <TextField
+                    error={Boolean(errors.pricing?.sku)}
+                    fullWidth
+                    placeholder="KWD 0.00"
+                    helperText={errors.pricing?.sku && ""}
+                    variant="outlined"
+                  />
+                )}
+              />
             </Box>
           </Stack>
         </FormCardItem>

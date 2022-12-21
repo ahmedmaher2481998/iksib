@@ -32,7 +32,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
           name="addons"
           control={control}
           render={({
-            fieldState: { error },
+            fieldState: {},
             formState: { errors },
             field: { onChange, value },
           }) => (
@@ -42,10 +42,10 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                   <InputLabel sx={{ color: "black", mb: 1, width: "100%" }}>
                     Addons
                   </InputLabel>
-                  <FormControl error={Boolean(errors.addons)}>
+                  <FormControl fullWidth error={Boolean(errors.addons)}>
                     <Autocomplete
                       multiple={true}
-                      // filterSelectedOptions={true}
+                      filterSelectedOptions
                       value={value}
                       options={addOns}
                       getOptionLabel={(addon: addonType) => addon.name}
@@ -53,7 +53,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                         <TextField
                           {...params}
                           placeholder={
-                            Boolean(value.length) ? "Select Addon" : ""
+                            Boolean(value?.length) ? "Select Addon" : ""
                           }
                           variant="outlined"
                         />
@@ -74,7 +74,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                     mt: 1,
                   }}
                 >
-                  {Boolean(value.length) && (
+                  {Boolean(value?.length) && (
                     <Typography fontSize={18} fontWeight="bold">
                       Saved Addons:
                     </Typography>
