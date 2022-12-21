@@ -34,7 +34,7 @@ const PricingComponent = ({ formHook }: props) => {
                   <TextField
                     fullWidth
                     error={Boolean(errors.pricing?.price)}
-                    helperText={errors.pricing?.price && ""}
+                    helperText={errors.pricing?.price?.message}
                     placeholder="KWD 0.00"
                     variant="outlined"
                   />
@@ -54,7 +54,7 @@ const PricingComponent = ({ formHook }: props) => {
                     fullWidth
                     onChange={onChange}
                     error={Boolean(errors.pricing?.salePrice)}
-                    helperText={errors.pricing?.salePrice && ""}
+                    helperText={errors.pricing?.salePrice?.message}
                     placeholder="KWD 0.00"
                     variant="outlined"
                   />
@@ -75,7 +75,8 @@ const PricingComponent = ({ formHook }: props) => {
                   fullWidth
                   placeholder="KWD 0.00"
                   helperText={
-                    errors.pricing?.costPerItem && "Customer's won't see this"
+                    errors.pricing?.costPerItem?.message ||
+                    "Customer's won't see this"
                   }
                   variant="outlined"
                 />
@@ -109,7 +110,7 @@ const PricingComponent = ({ formHook }: props) => {
                     error={Boolean(errors.pricing?.sku)}
                     fullWidth
                     placeholder="KWD 0.00"
-                    helperText={errors.pricing?.sku && ""}
+                    helperText={errors.pricing?.sku?.message}
                     variant="outlined"
                   />
                 )}
@@ -123,7 +124,8 @@ const PricingComponent = ({ formHook }: props) => {
           </Typography>
         </Box>
         <Grid p={2} container justifyContent={"space-between"} gap={1}>
-          {Array(5)
+          <LocationListComponent formHook={formHook} />
+          {/* {Array(5)
             .fill(" ")
             .map((item, index) => {
               return (
@@ -134,32 +136,102 @@ const PricingComponent = ({ formHook }: props) => {
                   title={`Location ${index + 1}`}
                 />
               );
-            })}
-          {/* <LocationComponent
-            formHook={formHook}
-            title="Location 1"
-            name="Location1"
-          />
-         */}
+
+            })} */}
         </Grid>
       </FormCard>
     </>
   );
 };
-const LocationComponent = ({
-  title,
-  formHook,
-}: {
-  title: string;
-  name: string;
-  formHook: formHookType;
-}) => {
-  const { errors, register } = formHook;
+const LocationListComponent = ({ formHook }: { formHook: formHookType }) => {
   return (
-    <Grid item xs={5}>
-      <InputLabel>{title}</InputLabel>
-      <TextField fullWidth variant="outlined" />
-    </Grid>
+    <>
+      <Grid item xs={5}>
+        <InputLabel>location 1</InputLabel>
+        <Controller
+          control={formHook.control}
+          name={`pricing.location.location1`}
+          render={({ formState: { errors } }) => {
+            return (
+              <TextField
+                helperText={errors.pricing?.location?.location1?.message}
+                error={Boolean(errors.pricing?.location?.location1)}
+                fullWidth
+                variant="outlined"
+              />
+            );
+          }}
+        />
+      </Grid>
+      <Grid item xs={5}>
+        <InputLabel>location 2</InputLabel>
+        <Controller
+          control={formHook.control}
+          name={`pricing.location.location2`}
+          render={({ formState: { errors } }) => {
+            return (
+              <TextField
+                helperText={errors.pricing?.location?.location2?.message}
+                error={Boolean(errors.pricing?.location?.location2)}
+                fullWidth
+                variant="outlined"
+              />
+            );
+          }}
+        />
+      </Grid>
+      <Grid item xs={5}>
+        <InputLabel>location 3</InputLabel>
+        <Controller
+          control={formHook.control}
+          name={`pricing.location.location3`}
+          render={({ formState: { errors } }) => {
+            return (
+              <TextField
+                helperText={errors.pricing?.location?.location3?.message}
+                error={Boolean(errors.pricing?.location?.location3)}
+                fullWidth
+                variant="outlined"
+              />
+            );
+          }}
+        />
+      </Grid>
+      <Grid item xs={5}>
+        <InputLabel>location 4</InputLabel>
+        <Controller
+          control={formHook.control}
+          name={`pricing.location.location4`}
+          render={({ formState: { errors } }) => {
+            return (
+              <TextField
+                helperText={errors.pricing?.location?.location4?.message}
+                error={Boolean(errors.pricing?.location?.location4)}
+                fullWidth
+                variant="outlined"
+              />
+            );
+          }}
+        />
+      </Grid>
+      <Grid item xs={5}>
+        <InputLabel>location 5</InputLabel>
+        <Controller
+          control={formHook.control}
+          name={`pricing.location.location5`}
+          render={({ formState: { errors } }) => {
+            return (
+              <TextField
+                helperText={errors.pricing?.location?.location5?.message}
+                error={Boolean(errors.pricing?.location?.location5)}
+                fullWidth
+                variant="outlined"
+              />
+            );
+          }}
+        />
+      </Grid>
+    </>
   );
 };
 export default PricingComponent;

@@ -47,7 +47,7 @@ const productValidationSchema = yup.object({
         salePrice: yup.number().required("Sale price is missing"),
         costPerItem: yup.number().required("cost per item is required"),
 
-        sku: yup.string().notRequired(),
+        sku: yup.string().required(),
         location: yup
           .object({
             location1: yup.string().required("one location at least needed"),
