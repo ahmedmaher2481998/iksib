@@ -3,6 +3,7 @@ import {
   Autocomplete,
   Chip,
   colors,
+  createFilterOptions,
   IconButton,
   InputLabel,
   ListItem,
@@ -18,10 +19,14 @@ import { Controller } from "react-hook-form";
 type props = {
   formHook: formHookType;
 };
+const filter = createFilterOptions<variantOption>();
+
 const VariantsCard: FC<props> = ({ formHook }: props) => {
-  const [options, setOptions] = useState<string[]>([]);
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const [typedValue, setTypedValue] = useState("");
+  // const [options, setOptions] = useState<variantOption[]>([]);
+  // const [selectedOption, setSelectedOption] = useState<variantOption>();
+  // const [typedValue, setTypedValue] = useState("");
+  const [option, setOption] = useState<string>("");
+  const [value, setValue] = useState<string>("");
   return (
     <FormCard>
       <FormCardItem size={{ xs: 12 }}>
@@ -35,7 +40,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
         </Typography>
         <Controller
           control={formHook.control}
-          name="addons"
+          name="attributes"
           render={({ field: { value, onChange }, formState: { errors } }) => {
             return (
               <>
@@ -47,37 +52,79 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                         <Typography fontSize={14}>(size,color,etc)</Typography>
                       </Stack>
                     </InputLabel>
-                    <Autocomplete
+                    <TextField placeholder="Option" variant="outlined" />
+
+                    {/* <Autocomplete
+                      value={selectedOption}
+                      sx={{ p: 0 }}
+                      onChange={(event, newValue) => {
+                        console.log(newValue);
+                        if (typeof newValue === "string") {
+                          setSelectedOption({
+                            name: newValue,
+                          });
+                        } else if (newValue && newValue.inputValue) {
+                          // Create a new value from the user input
+                          console.log("newValue", newValue);
+                          // setOptions((old) => [
+                          //   ...old,
+                          //   {
+                          //     name: newValue.inputValue,
+                          //   },
+                          // ]);
+                        } else {
+                          // setSelectedOption(newValue);
+                        }
+                      }}
+                      filterOptions={(options, params) => {
+                        const filtered = filter(options, params);
+
+                        const { inputValue } = params;
+                        // Suggest the creation of a new value
+                        const isExisting = options.some(
+                          (option) => inputValue === option.name
+                        );
+                        if (inputValue !== "" && !isExisting) {
+                          filtered.push({
+                            inputValue,
+                            name: `Add "${inputValue}"`,
+                          });
+                        }
+
+                        return filtered;
+                      }}
+                      selectOnFocus
+                      clearOnBlur
+                      handleHomeEndKeys
                       options={options}
-                      fullWidth
-                      sx={{ py: 0 }}
-                      // value={selectedOption}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          value={typedValue}
-                          // onChange={(e) => {
-                          //   setTypedValue(() => e.target.value);
-                          //   console.log(typedValue);
-                          // }}
-                          sx={{ py: "2px" }}
-                          placeholder={"Select Addon"}
-                          variant="outlined"
-                        />
+                      getOptionLabel={(option) => {
+                        // Value selected with enter, right from the input
+                        if (typeof option === "string") {
+                          return option;
+                        }
+                        // Add "xxx" option created dynamically
+                        if (option.inputValue) {
+                          return option.inputValue;
+                        }
+                        // Regular option
+                        return option.name;
+                      }}
+                      renderOption={(props, option) => (
+                        <li {...props}>{option.name}</li>
                       )}
-                      onChange={onChange}
-                      placeholder="Option name"
-                    />
+                      sx={{ width: 300 }}
+                      freeSolo
+                      renderInput={(params) => (
+                        <TextField {...params} sx={{ py: 1 }} />
+                      )}
+                    /> */}
                   </Box>
                   <Box>
                     <InputLabel htmlFor="options">Values</InputLabel>
-                    <TextField placeholder="Value" />
+                    <TextField placeholder="Value" variant="outlined" />
                   </Box>
                   <Box height={"100%"}>
                     <IconButton
-                      // onClick={() => {
-                      //   console.log(options, value);
-                      // }}
                       sx={{
                         mt: 3,
                         ml: 2,
@@ -89,14 +136,18 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                     </IconButton>
                   </Box>
                 </Stack>
+                <Box sx={{ p: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
+                  {value
+                    ?.find((v) => v.name === option)
+                    ?.values?.map((v) => (
+                      <Chip label={`${v}`} onDelete={() => {}} />
+                    ))}
+                  {/* <Chip label="Red" onDelete={() => {}} /> */}
+                </Box>
               </>
             );
           }}
         />
-
-        <Box sx={{ p: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
-          {/* <Chip label="Red" onDelete={() => {}} /> */}
-        </Box>
       </FormCardItem>
       <FormCardItem size={{ xs: 12 }}>
         <Typography

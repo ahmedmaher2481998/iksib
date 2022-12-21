@@ -32,6 +32,7 @@ export type formValues = {
   };
 };
 export type variantOption = {
+  inputValue?: string;
   name: string;
   values?: string[];
 };

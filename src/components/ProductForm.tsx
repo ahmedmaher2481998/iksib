@@ -48,6 +48,7 @@ const ProductForm = () => {
   } = useForm<formValues>({
     resolver: productValidationResolver,
     defaultValues: InitialFormValues,
+    mode: "onChange",
   });
   const formHook = { setValue, register, errors, getValues, control };
   console.log("Values", getValues(), "Errors:", errors);
