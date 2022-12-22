@@ -60,7 +60,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
     //no => add option && add variant value  if not ====''
     if (optionInputValue !== "") {
       const option = getOptionFromValue({ options, value: optionInputValue });
-
+      let newOptions = [...options];
       // option already exist
       if (option) {
         // entering new variant value if not empty nor exist in values array
@@ -68,20 +68,50 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
           variantValue !== "" &&
           !option?.values?.some((val) => val === variantValue)
         ) {
-          option?.values?.push(variantValue);
-          setOptions((old) => [...old, { ...option }]);
+          newOptions.forEach((opt) => {
+            if (opt.name === option.name) {
+              opt.values?.push(variantValue);
+            }
+          });
+          setOptions(newOptions);
+        } else {
         }
       } else {
-        if (options.length >= 4) return;
-        const newOption: variantOption = { name: optionInputValue };
-        if (variantValue !== "") newOption.values = [variantValue];
-        setOptions((old) => [...old, { ...newOption }]);
+        if (options.length === 4) return;
+        const newOption: variantOption = { name: optionInputValue, values: [] };
+        if (variantValue !== "") newOption.values?.push(variantValue);
+        newOptions.push(newOption);
+
+        setOptions(newOptions);
       }
     }
   };
-  // Test Values
-  // const [option, setOption] = useState<string>("");
-  // const [value, setValue] = useState<string>("");
+  const chipGenerator = () => {
+    if (selectedOption) {
+      const option = getOptionFromValue({
+        options,
+        value: selectedOption?.name,
+      });
+
+      return option?.values?.map((v) => (
+        <Chip
+          label={`${v}`}
+          onDelete={() => {
+            let newOptions = [...options];
+            newOptions = newOptions.filter((opt) => {
+              if (option.name === opt.name) {
+                opt.values = opt.values?.filter((val) => val !== v);
+
+                setSelectedOption(opt);
+                return opt;
+              } else return opt;
+            });
+            setOptions(newOptions);
+          }}
+        />
+      ));
+    }
+  };
   return (
     <Controller
       control={control}
@@ -111,99 +141,27 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                         <Typography fontSize={14}>(size,color,etc)</Typography>
                       </Stack>
                     </InputLabel>
-                    {/* <TextField
-                      value={option}
-                      onChange={(e) => {
-                        const {
-                          target: { value: inputValue },
-                        } = e;
-                        setOption(inputValue);
-                      }}
-                      placeholder="Option"
-                      variant="outlined"
-                    /> */}
+
                     <Autocomplete
                       value={selectedOption}
-                      // freeSolo
+                      sx={{ py: 0 }}
                       clearOnBlur={false}
                       options={options.map((option) => option)}
                       getOptionLabel={(opt: variantOption) => opt.name}
                       renderInput={(params) => <TextField {...params} />}
                       onChange={(e, v) => {
                         console.log("changed", e.target, v);
-                        v && setSelectedOption(v);
+                        if (options.length === 0) {
+                          setSelectedOption(undefined);
+                        } else {
+                          v && setSelectedOption(v);
+                        }
                       }}
                       inputValue={optionInputValue}
                       onInputChange={(event, newInputValue) => {
-                        console.log(newInputValue);
                         setOptionInputValue(newInputValue);
                       }}
                     />
-
-                    {/* <Autocomplete
-                      value={selectedOption}
-                      sx={{ p: 0 }}
-                      onChange={(event, newValue) => {
-                        
-                        if (typeof newValue === "string") {
-                          setSelectedOption({
-                            name: newValue,
-                          });
-                        } else if (newValue && newValue.inputValue) {
-                          // Create a new value from the user input
-                          console.log("newValue", newValue);
-                          // setOptions((old) => [
-                          //   ...old,
-                          //   {
-                          //     name: newValue.inputValue,
-                          //   },
-                          // ]);
-                        } else {
-                          // setSelectedOption(newValue);
-                        }
-                      }}
-                      filterOptions={(options, params) => {
-                        const filtered = filter(options, params);
-
-                        const { inputValue } = params;
-                        // Suggest the creation of a new value
-                        const isExisting = options.some(
-                          (option) => inputValue === option.name
-                        );
-                        if (inputValue !== "" && !isExisting) {
-                          if (filtered.length > 4) return;
-                          filtered.push({
-                            inputValue,
-                            name: `${inputValue}`,
-                          });
-                        }
-
-                        return filtered;
-                      }}
-                      selectOnFocus
-                      clearOnBlur
-                      handleHomeEndKeys
-                      options={options}
-                      getOptionLabel={(option) => {
-                        // Value selected with enter, right from the input
-                        if (typeof option === "string") {
-                          return option;
-                        }
-                        // Add "xxx" option created dynamically
-                        if (option.inputValue) {
-                          return option.inputValue;
-                        }
-                        // Regular option
-                        return option.name;
-                      }}
-                      renderOption={(props, option) => (
-                        <li {...props}>{option.name}</li>
-                      )}
-                      freeSolo
-                      renderInput={(params) => (
-                        <TextField {...params} sx={{ py: 1 }} />
-                      )}
-                    /> */}
                   </Box>
                   <Box>
                     <InputLabel htmlFor="options">Values</InputLabel>
@@ -231,10 +189,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                 <Box sx={{ p: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
                   {/* FIXME */}
                   {/* Render values selected  */}
-                  {selectedOption?.values?.map((v) => (
-                    <Chip label={`${v}`} onDelete={() => {}} />
-                  ))}
-                  {/* <Chip label="Red" onDelete={() => {}} /> */}
+                  {chipGenerator()}
                 </Box>
               </FormCardItem>
               <FormCardItem size={{ xs: 12 }}>
@@ -254,13 +209,25 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                       <ListItem
                         sx={{ bgcolor: colors.grey[200] }}
                         secondaryAction={
-                          <IconButton edge="end" aria-label="delete">
+                          <IconButton
+                            onClick={(e) => {
+                              let newOptions = [...options];
+                              newOptions = newOptions.filter(
+                                (opt1) => opt1.name !== opt.name
+                              );
+                              setOptions(newOptions);
+                            }}
+                            edge="end"
+                            aria-label="delete"
+                          >
                             <Close sx={{ color: colors.red[400] }} />
                           </IconButton>
                         }
                       >
                         <ListItemText
-                          primary={`${opt.name} : ${opt.values?.join(",")}`}
+                          primary={`${opt.name} : ${
+                            opt?.values?.join(",") || ""
+                          }`}
                         />
                       </ListItem>
                     );

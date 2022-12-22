@@ -47,7 +47,7 @@ const VariantFrom = () => {
             width: {
               xs: "360px",
               sm: "540px",
-              md: "800px",
+              md: "750px",
             },
           }}
           display="flex"
