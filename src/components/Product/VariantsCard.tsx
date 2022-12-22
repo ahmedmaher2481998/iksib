@@ -3,9 +3,9 @@ import {
   Autocomplete,
   Chip,
   colors,
-  createFilterOptions,
+  
   IconButton,
-  Input,
+  
   InputLabel,
   ListItem,
   ListItemText,
@@ -20,13 +20,12 @@ import { Controller } from "react-hook-form";
 type props = {
   formHook: formHookType;
 };
-const filter = createFilterOptions<variantOption>();
 const getOptionFromValue = ({
   options,
   value,
 }: {
   options: variantOption[];
-  value: String;
+  value: string;
 }) => {
   return options.find((opt) => opt.name === value);
 };
@@ -38,18 +37,8 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
   const [optionInputValue, setOptionInputValue] = useState("");
   // FIXME
   const handlingAddedValues = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+   
   ) => {
-    console.log("🚀 ~ file: VariantsCard.tsx:28 ~ options", options);
-    console.log(
-      "🚀 ~ file: VariantsCard.tsx:34 ~ optionInputValue",
-      optionInputValue
-    );
-    console.log("🚀 ~ file: VariantsCard.tsx:32 ~ variantValue", variantValue);
-    console.log(
-      "🚀 ~ file: VariantsCard.tsx:30 ~ selectedOption",
-      selectedOption
-    );
 
     // make sure to get the current typed value from the autoComplete
     // optionInputValue
@@ -60,7 +49,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
     //no => add option && add variant value  if not ====''
     if (optionInputValue !== "") {
       const option = getOptionFromValue({ options, value: optionInputValue });
-      let newOptions = [...options];
+      const newOptions = [...options];
       // option already exist
       if (option) {
         // entering new variant value if not empty nor exist in values array
@@ -74,7 +63,6 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
             }
           });
           setOptions(newOptions);
-        } else {
         }
       } else {
         if (options.length === 4) return;
@@ -85,6 +73,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
         setOptions(newOptions);
       }
     }
+   
   };
   const chipGenerator = () => {
     if (selectedOption) {
@@ -96,6 +85,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
       return option?.values?.map((v) => (
         <Chip
           label={`${v}`}
+          key={v}
           onDelete={() => {
             let newOptions = [...options];
             newOptions = newOptions.filter((opt) => {
@@ -118,8 +108,8 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
       name="attributes"
       render={({
         field: { value, onChange },
-        formState: { errors },
-        fieldState: {},
+        formState: { errors, },
+        
       }) => {
         return (
           <>
@@ -150,7 +140,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                       getOptionLabel={(opt: variantOption) => opt.name}
                       renderInput={(params) => <TextField {...params} />}
                       onChange={(e, v) => {
-                        console.log("changed", e.target, v);
+                      
                         if (options.length === 0) {
                           setSelectedOption(undefined);
                         } else {
@@ -207,10 +197,11 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                   {options.map((opt) => {
                     return (
                       <ListItem
+                      key={opt.name}
                         sx={{ bgcolor: colors.grey[200] }}
                         secondaryAction={
                           <IconButton
-                            onClick={(e) => {
+                            onClick={() => {
                               let newOptions = [...options];
                               newOptions = newOptions.filter(
                                 (opt1) => opt1.name !== opt.name

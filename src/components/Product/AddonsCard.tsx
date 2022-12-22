@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC,  } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
 import { addOns } from "../../data";
 import { Box } from "@mui/system";
@@ -22,7 +22,7 @@ type props = {
   formHook: formHookType;
 };
 const AddonsCard: FC<props> = ({ formHook }: props) => {
-  const { getValues, control, errors, setValue } = formHook;
+  const {  control,  setValue } = formHook;
 
   return (
     <FormCard>
@@ -32,7 +32,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
           name="addons"
           control={control}
           render={({
-            fieldState: {},
+           
             formState: { errors },
             field: { onChange, value },
           }) => (
@@ -46,6 +46,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                     <Autocomplete
                       multiple={true}
                       filterSelectedOptions
+  // renderTags={() => null}
                       value={value}
                       options={addOns}
                       getOptionLabel={(addon: addonType) => addon.name}
@@ -53,7 +54,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                         <TextField
                           {...params}
                           placeholder={
-                            Boolean(value?.length) ? "Select Addon" : ""
+                            value?.length ? "Select Addon" : ""
                           }
                           variant="outlined"
                         />
@@ -96,10 +97,11 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                         <ListItemText>{item.name}</ListItemText>
                         <ListItemIcon
                           sx={{ cursor: "pointer" }}
-                          onClick={(e) => {
+                          onClick={() => {
                             const newValue = value.filter(
                               (i) => i.id !== item.id
                             );
+
                             setValue("addons", newValue);
                             onChange(newValue);
                           }}

@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 const productValidationSchema = yup.object({
   id: yup
     .number()
-    .default(Math.random() * 100)
+    .default(Math.floor(Math.random()) * 100)
     .required("id is required"),
   dine_in: yup.boolean().default(false).notRequired(),
   pickable: yup.boolean().required("check pickup"),

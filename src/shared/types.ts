@@ -41,11 +41,16 @@ export type variantsFormValues = {
   sku: string;
   barcode: string;
   inventory: {
-    locationId: number;
-    branch_name: string;
-    quantitiy: number;
-  }[];
+    location1:stockLocationType,
+    location2?:stockLocationType,
+    location3?:stockLocationType,
+    location4?:stockLocationType,
+    location5?:stockLocationType,
+  };
 };
+type stockLocationType= {   locationId: number;
+      branch_name: string;
+      quantitiy: number;}
 export type variantOption = {
   name: string;
   values?: string[];
