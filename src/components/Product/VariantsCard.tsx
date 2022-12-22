@@ -13,10 +13,14 @@ import {
 import { Box, Stack } from "@mui/system";
 import React, { FC, useEffect, useState } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
-import { formHookType, variantOption } from "../../shared/types";
+import {
+  formHookType,
+  productFormValues,
+  variantOption,
+} from "../../shared/types";
 import { Controller } from "react-hook-form";
 type props = {
-  formHook: formHookType;
+  formHook: formHookType<productFormValues>;
 };
 const getOptionFromValue = ({
   options,
@@ -28,12 +32,15 @@ const getOptionFromValue = ({
   return options.find((opt) => opt.name === value);
 };
 const VariantsCard: FC<props> = ({ formHook }: props) => {
-  const { control } = formHook;
+  const { control, setValue } = formHook;
   const [options, setOptions] = useState<variantOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<variantOption>();
   const [variantValue, setVariantValue] = useState("");
   const [optionInputValue, setOptionInputValue] = useState("");
   const [chips, setChips] = useState<JSX.Element[]>([]);
+  useEffect(() => {
+    setValue("attributes", options);
+  }, [options]);
   // FIXME
   const handlingAddedValues = () => {
     // make sure to get the current typed value from the autoComplete
@@ -99,13 +106,13 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
   };
   useEffect(() => {
     const newChips = chipGenerator() || [];
-    setChips(newChips);
+    setChips(() => newChips);
   }, [options, variantValue, optionInputValue]);
   return (
     <Controller
       control={control}
       name="attributes"
-      render={({ field: { value, onChange }, formState: { errors } }) => {
+      render={() => {
         return (
           <>
             <FormCard>

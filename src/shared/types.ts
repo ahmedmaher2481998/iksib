@@ -1,6 +1,7 @@
 import {
   Control,
   FieldErrorsImpl,
+  FieldValues,
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
@@ -49,23 +50,21 @@ export type variantsFormValues = {
     location5?: stockLocationType;
   };
 };
-type stockLocationType = {
-  locationId: number;
-  branch_name: string;
-  quantitiy: number;
-};
+
+type stockLocationType = number;
+
 export type variantOption = {
   name: string;
   values?: string[];
 };
-export type formHookType = {
-  register: UseFormRegister<productFormValues>;
-  errors: Partial<FieldErrorsImpl<productFormValues>>;
-  getValues: UseFormGetValues<productFormValues>;
+export type formHookType<T extends FieldValues> = {
+  register: UseFormRegister<T>;
+  errors: Partial<FieldErrorsImpl<T>>;
+  getValues: UseFormGetValues<T>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<productFormValues, any>;
-  setValue: UseFormSetValue<productFormValues>;
-  watch: UseFormWatch<productFormValues>;
+  control: Control<T, any>;
+  setValue: UseFormSetValue<T>;
+  watch: UseFormWatch<T>;
 };
 export type subCategoryType = {
   category_id: number;

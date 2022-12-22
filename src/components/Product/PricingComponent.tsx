@@ -6,7 +6,7 @@ import { formHookType, productFormValues } from "../../shared/types";
 import { Controller } from "react-hook-form";
 import LocationListComponent from "./LocationListComponent";
 type props = {
-  formHook: formHookType;
+  formHook: formHookType<productFormValues>;
 };
 const PricingComponent = ({ formHook }: props) => {
   return (
@@ -28,10 +28,7 @@ const PricingComponent = ({ formHook }: props) => {
               <Controller
                 control={formHook.control}
                 name="pricing.price"
-                render={({
-                  field: { onChange},
-                  formState: { errors },
-                }) => (
+                render={({ field: { onChange }, formState: { errors } }) => (
                   <TextField
                     fullWidth
                     onChange={onChange}
@@ -71,7 +68,7 @@ const PricingComponent = ({ formHook }: props) => {
             <Controller
               control={formHook.control}
               name="pricing.costPerItem"
-              render={({ formState: { errors },field:{onChange} }) => (
+              render={({ formState: { errors }, field: { onChange } }) => (
                 <TextField
                   onChange={onChange}
                   error={Boolean(errors.pricing?.costPerItem)}
@@ -108,7 +105,7 @@ const PricingComponent = ({ formHook }: props) => {
               <Controller
                 control={formHook.control}
                 name="pricing.sku"
-                render={({ formState: { errors } ,field:{onChange}}) => (
+                render={({ formState: { errors }, field: { onChange } }) => (
                   <TextField
                     error={Boolean(errors.pricing?.sku)}
                     fullWidth

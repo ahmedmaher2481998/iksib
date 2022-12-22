@@ -17,9 +17,9 @@ import { addOns } from "../../data";
 import { Box } from "@mui/system";
 import { Clear } from "@mui/icons-material";
 import { Controller } from "react-hook-form";
-import { addonType, formHookType } from "../../shared/types";
+import { addonType, formHookType, productFormValues } from "../../shared/types";
 type props = {
-  formHook: formHookType;
+  formHook: formHookType<productFormValues>;
 };
 const AddonsCard: FC<props> = ({ formHook }: props) => {
   const { control, setValue } = formHook;

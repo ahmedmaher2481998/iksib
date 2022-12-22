@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { variantValidationResolver } from "../../shared/validation/VariantValidation";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -19,7 +19,8 @@ import { selectProduct } from "../../store/productSlice";
 import { FormCard, FormCardItem } from "../Product/FormCard";
 import FormHeader from "../Product/FormHeader";
 import MediaCard from "../Product/MediaCard";
-import { variantsFormValues } from "../../shared/types";
+import { formHookType, variantsFormValues } from "../../shared/types";
+import VariantLocationListComponent from "./LocayionListComponents";
 
 const VariantFrom = () => {
   const dispatch = useAppDispatch();
@@ -33,15 +34,29 @@ const VariantFrom = () => {
     setError,
     setValue,
     register,
+    watch,
     formState: { errors },
   } = useForm<variantsFormValues>({
     resolver: variantValidationResolver,
     mode: "onChange",
   });
+  const formHook: formHookType<variantsFormValues> = {
+    control,
+    errors,
+    getValues,
+    register,
+    setValue,
+    watch,
+  };
   // TODO controls the values of the validation form
+  console.log("variant form");
+  console.log("attributes", product.attributes);
+  console.log(getValues());
+  console.log(errors);
   const handleProductSubmit = (data: variantsFormValues) => {
     console.log(data);
   };
+
   return (
     <>
       <Box
@@ -89,7 +104,9 @@ const VariantFrom = () => {
                           }}
                         >
                           {option.values?.map((v) => (
-                            <MenuItem value={v}>{v}</MenuItem>
+                            <MenuItem key={v} value={v}>
+                              {v}
+                            </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
@@ -140,6 +157,15 @@ const VariantFrom = () => {
                     />
                   </Box>
                   <Box>
+                    <InputLabel>Sale price</InputLabel>
+                    <TextField
+                      variant="outlined"
+                      {...register("sale_price")}
+                      error={Boolean(errors.sale_price)}
+                      helperText={errors.sale_price?.message}
+                    />
+                  </Box>
+                  <Box>
                     <InputLabel>Cost per item </InputLabel>
                     <TextField
                       {...register("cost")}
@@ -160,7 +186,7 @@ const VariantFrom = () => {
             >
               Inventory
             </Typography>
-            <Stack
+            {/* <Stack
               direction="row"
               flexWrap={"wrap"}
               alignItems="center"
@@ -219,7 +245,16 @@ const VariantFrom = () => {
                   />
                 </div>
               </>
-            </Stack>
+            </Stack> */}
+            <Grid
+              container
+              justifyContent={"space-between"}
+              alignItems="flex-start"
+              p={2}
+              width="100%"
+            >
+              <VariantLocationListComponent formHook={formHook} />
+            </Grid>
             <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
               <Button
                 variant="contained"

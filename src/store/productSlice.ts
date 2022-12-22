@@ -1,9 +1,14 @@
-import { productFormValues, variantsFormValues } from "../shared/types";
+import {
+  productFormValues,
+  variantOption,
+  variantsFormValues,
+} from "../shared/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 interface ProductInterface {
   product: productFormValues;
+  variations: variantOption[];
 }
 const initialState: ProductInterface = {
   product: {
@@ -19,6 +24,8 @@ const initialState: ProductInterface = {
     attributes: [],
     variations: [],
   },
+  // too keep track of selected variations outside of the product Obj
+  variations: [],
 };
 export const productSlice = createSlice({
   name: "product",
@@ -26,6 +33,7 @@ export const productSlice = createSlice({
   reducers: {
     addProductData: (state, action: PayloadAction<productFormValues>) => {
       state.product = { ...action.payload };
+      state.variations = action.payload.attributes || [];
       return state;
     },
     addVariationDetails: (state, action: PayloadAction<variantsFormValues>) => {

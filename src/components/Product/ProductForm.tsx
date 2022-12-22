@@ -1,22 +1,5 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  InputLabel,
-  colors,
-  TextField,
-  FormControl,
-  Select,
-  MenuItem,
-  Checkbox,
-  ListItemText,
-  Autocomplete,
-  Button,
-  ListItem,
-  FormHelperText,
-} from "@mui/material";
+import { Box, Stack, Button } from "@mui/material";
 import React, { useState } from "react";
-import { ArrowBack } from "@mui/icons-material";
 import FormHeader from "./FormHeader";
 import { FormCard, FormCardItem } from "./FormCard";
 import {
@@ -24,7 +7,6 @@ import {
   productValidationResolver,
 } from "../../shared/validation/productValidation";
 import { useForm } from "react-hook-form";
-import { categories as categoriesData } from "../../data";
 import TitleDescriptionCard from "./TitleDescriptionCard";
 import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
@@ -58,11 +40,14 @@ const ProductForm = () => {
   const formHook = { setValue, register, errors, getValues, control, watch };
   console.log("Values", getValues(), "Errors:", errors);
   const handleProductSubmit = (data: productFormValues) => {
+    console.log("Submitting");
+    console.log(data);
     dispatch(addProductData(data));
-    reset();
-    if (getValues().has_varaiations) {
+    if (data.has_varaiations) {
+      reset();
       navigate("/variant");
     } else {
+      reset();
       navigate("/added");
     }
   };
