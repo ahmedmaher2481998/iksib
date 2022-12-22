@@ -11,9 +11,10 @@ const LocationListComponent = ({ formHook }: { formHook: formHookType }) => {
         <Controller
           control={formHook.control}
           name={`pricing.location.location1`}
-          render={({ formState: { errors } }) => {
+          render={({ formState: { errors } ,field:{onChange}}) => {
             return (
               <TextField
+              onChange={onChange}
                 helperText={errors.pricing?.location?.location1?.message}
                 error={Boolean(errors.pricing?.location?.location1)}
                 fullWidth
@@ -28,9 +29,10 @@ const LocationListComponent = ({ formHook }: { formHook: formHookType }) => {
         <Controller
           control={formHook.control}
           name={`pricing.location.location2`}
-          render={({ formState: { errors } }) => {
+          render={({ formState: { errors } ,field:{onChange}}) => {
             return (
               <TextField
+              onChange={onChange}
                 helperText={errors.pricing?.location?.location2?.message}
                 error={Boolean(errors.pricing?.location?.location2)}
                 fullWidth
@@ -45,9 +47,10 @@ const LocationListComponent = ({ formHook }: { formHook: formHookType }) => {
         <Controller
           control={formHook.control}
           name={`pricing.location.location3`}
-          render={({ formState: { errors } }) => {
+          render={({ formState: { errors } ,field:{onChange}}) => {
             return (
               <TextField
+              onChange={onChange}
                 helperText={errors.pricing?.location?.location3?.message}
                 error={Boolean(errors.pricing?.location?.location3)}
                 fullWidth
@@ -62,9 +65,10 @@ const LocationListComponent = ({ formHook }: { formHook: formHookType }) => {
         <Controller
           control={formHook.control}
           name={`pricing.location.location4`}
-          render={({ formState: { errors } }) => {
+          render={({ formState: { errors } ,field:{onChange}}) => {
             return (
               <TextField
+              onChange={onChange}
                 helperText={errors.pricing?.location?.location4?.message}
                 error={Boolean(errors.pricing?.location?.location4)}
                 fullWidth
@@ -79,9 +83,10 @@ const LocationListComponent = ({ formHook }: { formHook: formHookType }) => {
         <Controller
           control={formHook.control}
           name={`pricing.location.location5`}
-          render={({ formState: { errors } }) => {
+          render={({ formState: { errors } ,field:{onChange}}) => {
             return (
               <TextField
+              onChange={onChange}
                 helperText={errors.pricing?.location?.location5?.message}
                 error={Boolean(errors.pricing?.location?.location5)}
                 fullWidth

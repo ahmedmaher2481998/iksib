@@ -10,7 +10,6 @@ import {
   MenuItem,
   Checkbox,
   ListItemText,
-  SelectChangeEvent,
   Autocomplete,
   Button,
   ListItem,
@@ -48,6 +47,7 @@ const ProductForm = () => {
     control,
     reset,
     setValue,
+    watch,
   } = useForm<productFormValues>({
     resolver: productValidationResolver,
     defaultValues: InitialproductFormValues,
@@ -55,7 +55,7 @@ const ProductForm = () => {
   });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const formHook = { setValue, register, errors, getValues, control };
+  const formHook = { setValue, register, errors, getValues, control, watch };
   console.log("Values", getValues(), "Errors:", errors);
   const handleProductSubmit = (data: productFormValues) => {
     dispatch(addProductData(data));

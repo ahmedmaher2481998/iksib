@@ -3,9 +3,7 @@ import {
   Autocomplete,
   Chip,
   colors,
-  
   IconButton,
-  
   InputLabel,
   ListItem,
   ListItemText,
@@ -13,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
 import { formHookType, variantOption } from "../../shared/types";
 import { Controller } from "react-hook-form";
@@ -30,16 +28,14 @@ const getOptionFromValue = ({
   return options.find((opt) => opt.name === value);
 };
 const VariantsCard: FC<props> = ({ formHook }: props) => {
-  const { control, setValue } = formHook;
+  const { control } = formHook;
   const [options, setOptions] = useState<variantOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<variantOption>();
   const [variantValue, setVariantValue] = useState("");
   const [optionInputValue, setOptionInputValue] = useState("");
+  const [chips, setChips] = useState<JSX.Element[]>([]);
   // FIXME
-  const handlingAddedValues = (
-   
-  ) => {
-
+  const handlingAddedValues = () => {
     // make sure to get the current typed value from the autoComplete
     // optionInputValue
     // check if option exists /
@@ -73,7 +69,6 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
         setOptions(newOptions);
       }
     }
-   
   };
   const chipGenerator = () => {
     if (selectedOption) {
@@ -102,15 +97,15 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
       ));
     }
   };
+  useEffect(() => {
+    const newChips = chipGenerator() || [];
+    setChips(newChips);
+  }, [options, variantValue, optionInputValue]);
   return (
     <Controller
       control={control}
       name="attributes"
-      render={({
-        field: { value, onChange },
-        formState: { errors, },
-        
-      }) => {
+      render={({ field: { value, onChange }, formState: { errors } }) => {
         return (
           <>
             <FormCard>
@@ -140,7 +135,6 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                       getOptionLabel={(opt: variantOption) => opt.name}
                       renderInput={(params) => <TextField {...params} />}
                       onChange={(e, v) => {
-                      
                         if (options.length === 0) {
                           setSelectedOption(undefined);
                         } else {
@@ -179,7 +173,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                 <Box sx={{ p: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
                   {/* FIXME */}
                   {/* Render values selected  */}
-                  {chipGenerator()}
+                  {chips}
                 </Box>
               </FormCardItem>
               <FormCardItem size={{ xs: 12 }}>
@@ -197,7 +191,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                   {options.map((opt) => {
                     return (
                       <ListItem
-                      key={opt.name}
+                        key={opt.name}
                         sx={{ bgcolor: colors.grey[200] }}
                         secondaryAction={
                           <IconButton

@@ -4,8 +4,8 @@ import {
   UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
-import { number } from "yup";
 
 export type productFormValues = {
   id: number;
@@ -31,6 +31,7 @@ export type productFormValues = {
     };
     sku?: string;
   };
+  variations?: variantsFormValues[];
 };
 export type variantsFormValues = {
   variation_string: string;
@@ -41,16 +42,18 @@ export type variantsFormValues = {
   sku: string;
   barcode: string;
   inventory: {
-    location1:stockLocationType,
-    location2?:stockLocationType,
-    location3?:stockLocationType,
-    location4?:stockLocationType,
-    location5?:stockLocationType,
+    location1: stockLocationType;
+    location2?: stockLocationType;
+    location3?: stockLocationType;
+    location4?: stockLocationType;
+    location5?: stockLocationType;
   };
 };
-type stockLocationType= {   locationId: number;
-      branch_name: string;
-      quantitiy: number;}
+type stockLocationType = {
+  locationId: number;
+  branch_name: string;
+  quantitiy: number;
+};
 export type variantOption = {
   name: string;
   values?: string[];
@@ -59,8 +62,10 @@ export type formHookType = {
   register: UseFormRegister<productFormValues>;
   errors: Partial<FieldErrorsImpl<productFormValues>>;
   getValues: UseFormGetValues<productFormValues>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<productFormValues, any>;
   setValue: UseFormSetValue<productFormValues>;
+  watch: UseFormWatch<productFormValues>;
 };
 export type subCategoryType = {
   category_id: number;

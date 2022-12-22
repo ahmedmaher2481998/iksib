@@ -29,11 +29,12 @@ const PricingComponent = ({ formHook }: props) => {
                 control={formHook.control}
                 name="pricing.price"
                 render={({
-                  field: { name, onChange, value },
+                  field: { onChange},
                   formState: { errors },
                 }) => (
                   <TextField
                     fullWidth
+                    onChange={onChange}
                     error={Boolean(errors.pricing?.price)}
                     helperText={errors.pricing?.price?.message}
                     placeholder="KWD 0.00"
@@ -69,9 +70,10 @@ const PricingComponent = ({ formHook }: props) => {
             </InputLabel>
             <Controller
               control={formHook.control}
-              name="pricing.salePrice"
-              render={({ formState: { errors } }) => (
+              name="pricing.costPerItem"
+              render={({ formState: { errors },field:{onChange} }) => (
                 <TextField
+                  onChange={onChange}
                   error={Boolean(errors.pricing?.costPerItem)}
                   fullWidth
                   placeholder="KWD 0.00"
@@ -106,10 +108,11 @@ const PricingComponent = ({ formHook }: props) => {
               <Controller
                 control={formHook.control}
                 name="pricing.sku"
-                render={({ formState: { errors } }) => (
+                render={({ formState: { errors } ,field:{onChange}}) => (
                   <TextField
                     error={Boolean(errors.pricing?.sku)}
                     fullWidth
+                    onChange={onChange}
                     placeholder="KWD 0.00"
                     helperText={errors.pricing?.sku?.message}
                     variant="outlined"

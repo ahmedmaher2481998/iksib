@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { FC,  } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
 import { addOns } from "../../data";
 import { Box } from "@mui/system";
@@ -22,7 +22,11 @@ type props = {
   formHook: formHookType;
 };
 const AddonsCard: FC<props> = ({ formHook }: props) => {
-  const {  control,  setValue } = formHook;
+  const { control, setValue } = formHook;
+  const [addonValue, setAddonValue] = useState<addonType[]>([]);
+  useEffect(() => {
+    setValue("addons", addonValue);
+  }, [addonValue]);
 
   return (
     <FormCard>
@@ -31,11 +35,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
         <Controller
           name="addons"
           control={control}
-          render={({
-           
-            formState: { errors },
-            field: { onChange, value },
-          }) => (
+          render={({ formState: { errors }, field: { onChange, value } }) => (
             <>
               <FormCardItem size={{ xs: 12 }}>
                 <Box sx={{ width: "100%" }}>
@@ -46,20 +46,21 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                     <Autocomplete
                       multiple={true}
                       filterSelectedOptions
-  // renderTags={() => null}
-                      value={value}
+                      renderTags={() => null}
+                      value={addonValue}
                       options={addOns}
                       getOptionLabel={(addon: addonType) => addon.name}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          placeholder={
-                            value?.length ? "Select Addon" : ""
-                          }
+                          placeholder={value?.length ? "Select Addon" : ""}
                           variant="outlined"
                         />
                       )}
-                      onChange={(e, data) => onChange(data)}
+                      onChange={(e, data) => {
+                        setAddonValue(data);
+                        onChange(addonValue);
+                      }}
                     />
                     <FormHelperText>{errors.addons?.message}</FormHelperText>
                   </FormControl>
@@ -75,7 +76,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                     mt: 1,
                   }}
                 >
-                  {Boolean(value?.length) && (
+                  {Boolean(addonValue?.length) && (
                     <Typography fontSize={18} fontWeight="bold">
                       Saved Addons:
                     </Typography>
@@ -101,9 +102,8 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                             const newValue = value.filter(
                               (i) => i.id !== item.id
                             );
-
-                            setValue("addons", newValue);
-                            onChange(newValue);
+                            console.log(newValue);
+                            setAddonValue(newValue);
                           }}
                         >
                           <Clear />

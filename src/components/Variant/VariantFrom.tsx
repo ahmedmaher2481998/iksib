@@ -11,28 +11,37 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useContext, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { variantValidationResolver } from "../../shared/validation/VariantValidation";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { selectProduct } from "../../store/productSlice";
 import { FormCard, FormCardItem } from "../Product/FormCard";
 import FormHeader from "../Product/FormHeader";
 import MediaCard from "../Product/MediaCard";
-import {variantsFormValues} from '../../shared/types'
+import { variantsFormValues } from "../../shared/types";
 
 const VariantFrom = () => {
   const dispatch = useAppDispatch();
   const product = useAppSelector(selectProduct);
-  const [variation, setVariation] = useState([]);
-  const { control, handleSubmit,getValues, reset, setError, setValue, register,formState:{errors} } = useForm<variantsFormValues>({
+  // const [variation, setVariation] = useState([]);
+  const {
+    control,
+    handleSubmit,
+    getValues,
+    reset,
+    setError,
+    setValue,
+    register,
+    formState: { errors },
+  } = useForm<variantsFormValues>({
     resolver: variantValidationResolver,
     mode: "onChange",
   });
   // TODO controls the values of the validation form
-  const handleProductSubmit=(data:variantsFormValues)=>{
+  const handleProductSubmit = (data: variantsFormValues) => {
     console.log(data);
-  }
+  };
   return (
     <>
       <Box
@@ -114,27 +123,30 @@ const VariantFrom = () => {
                 >
                   <Box>
                     <InputLabel>SKU (stock keeping unit) </InputLabel>
-                    <TextField variant="outlined"
-                     {...register("sku")} 
-                     error={Boolean(errors.sku)} 
-                    helperText={errors.sku?.message}
+                    <TextField
+                      variant="outlined"
+                      {...register("sku")}
+                      error={Boolean(errors.sku)}
+                      helperText={errors.sku?.message}
                     />
                   </Box>
                   <Box>
                     <InputLabel>Price </InputLabel>
-                    <TextField  
-                     {...register("regular_price")} 
-                     error={Boolean(errors.regular_price)} 
-                    helperText={errors.regular_price?.message}
-                    variant="outlined" />
+                    <TextField
+                      {...register("regular_price")}
+                      error={Boolean(errors.regular_price)}
+                      helperText={errors.regular_price?.message}
+                      variant="outlined"
+                    />
                   </Box>
                   <Box>
                     <InputLabel>Cost per item </InputLabel>
-                    <TextField 
-                     {...register("cost")} 
-                     error={Boolean(errors.cost)} 
-                    helperText={errors.cost?.message}
-                    variant="outlined" />
+                    <TextField
+                      {...register("cost")}
+                      error={Boolean(errors.cost)}
+                      helperText={errors.cost?.message}
+                      variant="outlined"
+                    />
                   </Box>
                 </Stack>
               </FormCardItem>
@@ -155,44 +167,58 @@ const VariantFrom = () => {
               px={4}
               justifyContent="space-between"
             >
-                  <>
-                    <div  style={{ minWidth: "250px" }}>
-                      <InputLabel>location 1</InputLabel>
-                      <TextField 
-                      {...register("inventory.location1.quantitiy")} 
-                     error={Boolean(errors.inventory?.location1)} 
+              <>
+                <div style={{ minWidth: "250px" }}>
+                  <InputLabel>location 1</InputLabel>
+                  <TextField
+                    {...register("inventory.location1.quantitiy")}
+                    error={Boolean(errors.inventory?.location1)}
                     helperText={errors.inventory?.location1?.quantitiy?.message}
-                      fullWidth variant="outlined" />
-                    </div>
-                     <div  style={{ minWidth: "250px" }}>
-                      <InputLabel>location 2</InputLabel>
-                      <TextField    {...register("inventory.location2.quantitiy")} 
-                     error={Boolean(errors.inventory?.location2)} 
+                    fullWidth
+                    variant="outlined"
+                  />
+                </div>
+                <div style={{ minWidth: "250px" }}>
+                  <InputLabel>location 2</InputLabel>
+                  <TextField
+                    {...register("inventory.location2.quantitiy")}
+                    error={Boolean(errors.inventory?.location2)}
                     helperText={errors.inventory?.location2?.quantitiy?.message}
-                     fullWidth variant="outlined" />
-                    </div>
-                     <div  style={{ minWidth: "250px" }}>
-                      <InputLabel>location 3</InputLabel>
-                      <TextField    {...register("inventory.location3.quantitiy")} 
-                     error={Boolean(errors.inventory?.location3)} 
+                    fullWidth
+                    variant="outlined"
+                  />
+                </div>
+                <div style={{ minWidth: "250px" }}>
+                  <InputLabel>location 3</InputLabel>
+                  <TextField
+                    {...register("inventory.location3.quantitiy")}
+                    error={Boolean(errors.inventory?.location3)}
                     helperText={errors.inventory?.location3?.quantitiy?.message}
-                     fullWidth variant="outlined" />
-                    </div>
-                     <div  style={{ minWidth: "250px" }}>
-                      <InputLabel>location 4</InputLabel>
-                      <TextField    {...register("inventory.location4.quantitiy")} 
-                     error={Boolean(errors.inventory?.location4)} 
+                    fullWidth
+                    variant="outlined"
+                  />
+                </div>
+                <div style={{ minWidth: "250px" }}>
+                  <InputLabel>location 4</InputLabel>
+                  <TextField
+                    {...register("inventory.location4.quantitiy")}
+                    error={Boolean(errors.inventory?.location4)}
                     helperText={errors.inventory?.location4?.quantitiy?.message}
-                     fullWidth variant="outlined" />
-                    </div>
-                     <div  style={{ minWidth: "250px" }}>
-                      <InputLabel>location 5</InputLabel>
-                      <TextField    {...register("inventory.location2.quantitiy")} 
-                     error={Boolean(errors.inventory?.location2)} 
+                    fullWidth
+                    variant="outlined"
+                  />
+                </div>
+                <div style={{ minWidth: "250px" }}>
+                  <InputLabel>location 5</InputLabel>
+                  <TextField
+                    {...register("inventory.location2.quantitiy")}
+                    error={Boolean(errors.inventory?.location2)}
                     helperText={errors.inventory?.location2?.quantitiy?.message}
-                     fullWidth variant="outlined" />
-                    </div>
-                  </>
+                    fullWidth
+                    variant="outlined"
+                  />
+                </div>
+              </>
             </Stack>
             <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
               <Button

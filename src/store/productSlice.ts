@@ -1,4 +1,4 @@
-import { productFormValues } from "../shared/types";
+import { productFormValues, variantsFormValues } from "../shared/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
@@ -16,10 +16,8 @@ const initialState: ProductInterface = {
     pickable: false,
     sub_categories: [2, 3],
     title: "title",
-    attributes: [
-      { name: "Colors", values: ["red", "green"] },
-      { name: "Size", values: ["S", "XL", "L"] },
-    ],
+    attributes: [],
+    variations: [],
   },
 };
 export const productSlice = createSlice({
@@ -30,9 +28,26 @@ export const productSlice = createSlice({
       state.product = { ...action.payload };
       return state;
     },
+    addVariationDetails: (state, action: PayloadAction<variantsFormValues>) => {
+      state.product.variations?.push(action.payload);
+      return state;
+    },
+    removeVariationDetailsByVariationString: (
+      state,
+      action: PayloadAction<{ variation_string: string }>
+    ) => {
+      state.product.variations?.filter((v) => {
+        if (v.variation_string !== action.payload.variation_string) return v;
+      });
+      return state;
+    },
   },
 });
-export const { addProductData } = productSlice.actions;
+export const {
+  addProductData,
+  addVariationDetails,
+  removeVariationDetailsByVariationString,
+} = productSlice.actions;
 export const selectProduct = (state: RootState) => state.productReducer.product;
 
 export default productSlice.reducer;
