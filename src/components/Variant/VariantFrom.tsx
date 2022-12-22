@@ -28,7 +28,7 @@ const VariantFrom = () => {
     resolver: variantValidationResolver,
     mode: "onChange",
   });
-
+  // TODO controls the values of the validation form
   return (
     <>
       <Box
