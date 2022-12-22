@@ -13,11 +13,11 @@ import {
 } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
-import { addOns } from "../data";
+import { addOns } from "../../data";
 import { Box } from "@mui/system";
 import { Clear } from "@mui/icons-material";
 import { Controller } from "react-hook-form";
-import { addonType, formHookType } from "../shared/types";
+import { addonType, formHookType } from "../../shared/types";
 type props = {
   formHook: formHookType;
 };

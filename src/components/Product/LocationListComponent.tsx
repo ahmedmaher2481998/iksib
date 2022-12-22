@@ -1,7 +1,7 @@
 import { Grid, InputLabel, TextField } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
-import { formHookType } from "../shared/types";
+import { formHookType } from "../../shared/types";
 
 const LocationListComponent = ({ formHook }: { formHook: formHookType }) => {
   return (

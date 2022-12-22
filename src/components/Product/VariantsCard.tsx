@@ -15,7 +15,7 @@ import {
 import { Box, Stack } from "@mui/system";
 import React, { FC, useState } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
-import { formHookType, variantOption } from "../shared/types";
+import { formHookType, variantOption } from "../../shared/types";
 import { Controller } from "react-hook-form";
 type props = {
   formHook: formHookType;
@@ -36,6 +36,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
   const [selectedOption, setSelectedOption] = useState<variantOption>();
   const [variantValue, setVariantValue] = useState("");
   const [optionInputValue, setOptionInputValue] = useState("");
+  // FIXME
   const handlingAddedValues = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -82,26 +83,26 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
   // const [option, setOption] = useState<string>("");
   // const [value, setValue] = useState<string>("");
   return (
-    <FormCard>
-      <FormCardItem size={{ xs: 12 }}>
-        <Typography
-          fontSize={18}
-          sx={{ color: "black" }}
-          fontWeight="semibold"
-          mb={2}
-        >
-          Variants
-        </Typography>
-        <Controller
-          control={control}
-          name="attributes"
-          render={({
-            field: { value, onChange },
-            formState: { errors },
-            fieldState: {},
-          }) => {
-            return (
-              <>
+    <Controller
+      control={control}
+      name="attributes"
+      render={({
+        field: { value, onChange },
+        formState: { errors },
+        fieldState: {},
+      }) => {
+        return (
+          <>
+            <FormCard>
+              <FormCardItem size={{ xs: 12 }}>
+                <Typography
+                  fontSize={18}
+                  sx={{ color: "black" }}
+                  fontWeight="semibold"
+                  mb={2}
+                >
+                  Variants
+                </Typography>
                 <Stack direction={"row"} spacing={1} alignItems="center">
                   <Box mr={1}>
                     <InputLabel sx={{ fontSize: 18 }} htmlFor="options">
@@ -235,33 +236,42 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                   ))}
                   {/* <Chip label="Red" onDelete={() => {}} /> */}
                 </Box>
-              </>
-            );
-          }}
-        />
-      </FormCardItem>
-      <FormCardItem size={{ xs: 12 }}>
-        <Typography
-          py={1}
-          fontSize={18}
-          sx={{ borderTop: "2px solid", borderTopColor: colors.grey[200] }}
-        >
-          Saved Variants
-        </Typography>
-        <Stack>
-          <ListItem
-            sx={{ bgcolor: colors.grey[200] }}
-            secondaryAction={
-              <IconButton edge="end" aria-label="delete">
-                <Close sx={{ color: colors.red[400] }} />
-              </IconButton>
-            }
-          >
-            <ListItemText primary="Colors : Red,Blue,Green,Black,White,Brown,Pink," />
-          </ListItem>
-        </Stack>
-      </FormCardItem>
-    </FormCard>
+              </FormCardItem>
+              <FormCardItem size={{ xs: 12 }}>
+                <Typography
+                  py={1}
+                  fontSize={18}
+                  sx={{
+                    borderTop: "2px solid",
+                    borderTopColor: colors.grey[200],
+                  }}
+                >
+                  Saved Variants
+                </Typography>
+                <Stack spacing={1}>
+                  {options.map((opt) => {
+                    return (
+                      <ListItem
+                        sx={{ bgcolor: colors.grey[200] }}
+                        secondaryAction={
+                          <IconButton edge="end" aria-label="delete">
+                            <Close sx={{ color: colors.red[400] }} />
+                          </IconButton>
+                        }
+                      >
+                        <ListItemText
+                          primary={`${opt.name} : ${opt.values?.join(",")}`}
+                        />
+                      </ListItem>
+                    );
+                  })}
+                </Stack>
+              </FormCardItem>
+            </FormCard>
+          </>
+        );
+      }}
+    />
   );
 };
 

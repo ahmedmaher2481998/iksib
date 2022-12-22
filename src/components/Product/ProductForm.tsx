@@ -23,14 +23,14 @@ import { FormCard, FormCardItem } from "./FormCard";
 import {
   InitialFormValues,
   productValidationResolver,
-} from "../shared/validation/productValidation";
+} from "../../shared/validation/productValidation";
 import { useForm } from "react-hook-form";
-import { categories as categoriesData } from "../data";
+import { categories as categoriesData } from "../../data";
 import TitleDescriptionCard from "./TitleDescriptionCard";
 import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
 import AddonsCard from "./AddonsCard";
-import { formValues } from "../shared/types";
+import { formValues } from "../../shared/types";
 import SelectionPickableAndVariants from "./SelectionPickableAndVarainats";
 import SubCategory from "./SubCategory";
 

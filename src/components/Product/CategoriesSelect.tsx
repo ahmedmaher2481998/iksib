@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import React, { FC } from "react";
 import { Controller } from "react-hook-form";
-import { categories as categoriesData } from "../data";
-import { formHookType } from "../shared/types";
-import { getCheckedBoolean } from "../shared/utils";
+import { categories as categoriesData } from "../../data";
+import { formHookType } from "../../shared/types";
+import { getCheckedBoolean } from "../../shared/utils";
 type props = {
   catagories: number[];
   setCatagories: React.Dispatch<React.SetStateAction<number[]>>;

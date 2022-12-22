@@ -9,9 +9,13 @@ import {
 } from "@mui/material";
 import React, { FC, useState } from "react";
 import { Controller } from "react-hook-form";
-import { categories, categories as categoriesData } from "../data";
-import { CategoryType, formHookType, subCategoryType } from "../shared/types";
-import { getCheckedBoolean } from "../shared/utils";
+import { categories, categories as categoriesData } from "../../data";
+import {
+  CategoryType,
+  formHookType,
+  subCategoryType,
+} from "../../shared/types";
+import { getCheckedBoolean } from "../../shared/utils";
 
 type props = {
   catagories: number[];
