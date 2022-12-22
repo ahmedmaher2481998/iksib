@@ -21,7 +21,7 @@ import { ArrowBack } from "@mui/icons-material";
 import FormHeader from "./FormHeader";
 import { FormCard, FormCardItem } from "./FormCard";
 import {
-  InitialFormValues,
+  InitialproductFormValues,
   productValidationResolver,
 } from "../../shared/validation/productValidation";
 import { useForm } from "react-hook-form";
@@ -30,9 +30,12 @@ import TitleDescriptionCard from "./TitleDescriptionCard";
 import MediaCard from "./MediaCard";
 import CategoriesSelect from "./CategoriesSelect";
 import AddonsCard from "./AddonsCard";
-import { formValues } from "../../shared/types";
+import { productFormValues } from "../../shared/types";
 import SelectionPickableAndVariants from "./SelectionPickableAndVarainats";
 import SubCategory from "./SubCategory";
+import { useAppDispatch } from "../../store/hooks";
+import { addProductData } from "../../store/productSlice";
+import { useNavigate } from "react-router-dom";
 
 const ProductForm = () => {
   const [catagories, setCatagories] = useState<number[]>([]);
@@ -45,16 +48,23 @@ const ProductForm = () => {
     control,
     reset,
     setValue,
-  } = useForm<formValues>({
+  } = useForm<productFormValues>({
     resolver: productValidationResolver,
-    defaultValues: InitialFormValues,
+    defaultValues: InitialproductFormValues,
     mode: "onChange",
   });
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const formHook = { setValue, register, errors, getValues, control };
   console.log("Values", getValues(), "Errors:", errors);
-  const handleProductSubmit = (data: formValues) => {
-    console.log("This is data logging");
-    console.log(data);
+  const handleProductSubmit = (data: productFormValues) => {
+    dispatch(addProductData(data));
+    reset();
+    if (getValues().has_varaiations) {
+      navigate("/variant");
+    } else {
+      navigate("/added");
+    }
   };
   return (
     <Box
@@ -73,14 +83,18 @@ const ProductForm = () => {
           width: {
             xs: "360px",
             sm: "540px",
-            md: "700px",
+            md: "800px",
           },
         }}
         display="flex"
         gap={3}
       >
         <FormHeader title="Add Product" />
-        <MediaCard />
+        <FormCard>
+          <FormCardItem size={{ xs: 12 }}>
+            <MediaCard />
+          </FormCardItem>
+        </FormCard>
         <TitleDescriptionCard formHook={formHook} />
         <FormCard>
           <FormCardItem size={{ xs: 12 }}>

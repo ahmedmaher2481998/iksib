@@ -2,7 +2,7 @@ import { colors, Grid, InputLabel, TextField, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React from "react";
 import { FormCard, FormCardItem } from "./FormCard";
-import { formHookType, formValues } from "../../shared/types";
+import { formHookType, productFormValues } from "../../shared/types";
 import { Controller } from "react-hook-form";
 import LocationListComponent from "./LocationListComponent";
 type props = {

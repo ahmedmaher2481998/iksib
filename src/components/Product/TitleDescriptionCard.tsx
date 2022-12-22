@@ -2,7 +2,7 @@ import { InputLabel, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { FC } from "react";
 import { FormCard, FormCardItem } from "./FormCard";
-import { formHookType, formValues } from "../shared/types";
+import { formHookType, productFormValues } from "../shared/types";
 type props = {
   formHook: formHookType;
 };

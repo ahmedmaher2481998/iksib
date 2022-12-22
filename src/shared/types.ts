@@ -5,8 +5,9 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+import { number } from "yup";
 
-export type formValues = {
+export type productFormValues = {
   id: number;
   dine_in: boolean;
   pickable: boolean;
@@ -17,7 +18,7 @@ export type formValues = {
   sub_categories: number[];
   addons: addonType[];
   attributes?: variantOption[];
-  pricing: {
+  pricing?: {
     price: string;
     salePrice: string;
     costPerItem: string;
@@ -31,17 +32,30 @@ export type formValues = {
     sku?: string;
   };
 };
+export type variantsFormValues = {
+  variation_string: string;
+  variation: string[];
+  cost: number;
+  regular_price: number;
+  sale_price: number;
+  sku: string;
+  barcode: string;
+  inventory: {
+    locationId: number;
+    branch_name: string;
+    quantitiy: number;
+  }[];
+};
 export type variantOption = {
-  inputValue?: string;
   name: string;
   values?: string[];
 };
 export type formHookType = {
-  register: UseFormRegister<formValues>;
-  errors: Partial<FieldErrorsImpl<formValues>>;
-  getValues: UseFormGetValues<formValues>;
-  control: Control<formValues, any>;
-  setValue: UseFormSetValue<formValues>;
+  register: UseFormRegister<productFormValues>;
+  errors: Partial<FieldErrorsImpl<productFormValues>>;
+  getValues: UseFormGetValues<productFormValues>;
+  control: Control<productFormValues, any>;
+  setValue: UseFormSetValue<productFormValues>;
 };
 export type subCategoryType = {
   category_id: number;

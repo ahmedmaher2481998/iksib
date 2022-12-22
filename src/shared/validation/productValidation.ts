@@ -63,7 +63,7 @@ const productValidationSchema = yup.object({
   }),
 });
 export const productValidationResolver = yupResolver(productValidationSchema);
-export const InitialFormValues = {
+export const InitialproductFormValues = {
   description: "",
   dine_in: false,
   title: "",

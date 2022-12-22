@@ -3,7 +3,7 @@ import { Box, Stack } from "@mui/system";
 import React, { FC, useState } from "react";
 import VariantsCard from "./VariantsCard";
 import { FormCard, FormCardItem } from "./FormCard";
-import { formHookType, formValues } from "../../shared/types";
+import { formHookType, productFormValues } from "../../shared/types";
 import PricingComponent from "./PricingComponent";
 import { Controller } from "react-hook-form";
 type props = {
