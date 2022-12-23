@@ -1,3 +1,6 @@
 .MuiOutlinedInput-input {
   padding-block: 8px !important;
 }
+.MuiAutocomplete-input {
+  padding: 0 !important;
+}

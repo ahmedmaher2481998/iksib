@@ -77,7 +77,7 @@ const AddonsCard: FC<props> = ({ formHook }: props) => {
                   }}
                 >
                   {Boolean(addonValue?.length) && (
-                    <Typography fontSize={18} fontWeight="bold">
+                    <Typography fontSize={16} fontWeight="semibold">
                       Saved Addons:
                     </Typography>
                   )}

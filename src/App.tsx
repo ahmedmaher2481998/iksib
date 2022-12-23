@@ -28,5 +28,5 @@ function App() {
 export default App;
 const Added = () => {
   const product = useAppSelector(selectProduct);
-  return <p>{JSON.stringify(product)}</p>;
+  return <p>{JSON.stringify(product, null, 4)}</p>;
 };

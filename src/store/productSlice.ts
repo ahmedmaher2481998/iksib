@@ -45,11 +45,11 @@ export const productSlice = createSlice({
     },
     removeVariationDetailsByVariationString: (
       state,
-      action: PayloadAction<string>
+      action: PayloadAction<variantsFormValues>
     ) => {
       state.product.productVariations = state.product.productVariations?.filter(
         (v) => {
-          return v.variation_string !== action.payload;
+          return JSON.stringify(v) !== JSON.stringify(action.payload);
         }
       );
       return state;

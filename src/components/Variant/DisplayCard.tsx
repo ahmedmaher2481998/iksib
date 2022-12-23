@@ -1,5 +1,7 @@
 import { Clear } from "@mui/icons-material";
 import {
+  Box,
+  Button,
   colors,
   ListItem,
   ListItemIcon,
@@ -7,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { removeVariationDetailsByVariationString } from "../../store/productSlice";
 import { FormCard, FormCardItem } from "../Product/FormCard";
@@ -16,8 +19,8 @@ const DisplayCard = () => {
   const productVariations = useAppSelector(
     (s) => s.productReducer.product.productVariations
   );
-
-  if (productVariations?.length && productVariations?.length < 1) return null;
+  const navigate = useNavigate();
+  if (!productVariations?.length) return null;
   return (
     <FormCard>
       <FormCardItem size={{ xs: 12 }}>
@@ -44,11 +47,7 @@ const DisplayCard = () => {
               <ListItemIcon
                 sx={{ cursor: "pointer", color: colors.red[500] }}
                 onClick={() => {
-                  dispatch(
-                    removeVariationDetailsByVariationString(
-                      item.variation_string
-                    )
-                  );
+                  dispatch(removeVariationDetailsByVariationString(item));
                 }}
               >
                 <Clear />
@@ -56,6 +55,21 @@ const DisplayCard = () => {
             </ListItem>
           );
         })}
+        {Boolean(productVariations?.length) && (
+          <Box width={"100%"} display="flex" px={3} justifyContent="flex-end">
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => {
+                navigate("/added");
+              }}
+              type="button"
+              sx={{ bgcolor: "primary.main", mb: 2, mt: 2 }}
+            >
+              Finish
+            </Button>
+          </Box>
+        )}
       </FormCardItem>
     </FormCard>
   );

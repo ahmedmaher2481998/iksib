@@ -14,7 +14,6 @@ const SelectionPickableAndVariants: FC<props> = ({ formHook }: props) => {
   return (
     <>
       <FormCard>
-        productFormValues
         <FormCardItem size={{ xs: 12 }}>
           <Stack sx={{ width: "100%" }} spacing={1} direction="column" p={1}>
             <Box

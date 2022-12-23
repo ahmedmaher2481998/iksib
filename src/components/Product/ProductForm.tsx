@@ -44,7 +44,7 @@ const ProductForm = () => {
     if (data.has_varaiations) {
       reset();
       navigate("/variant", { replace: true });
-    } else {
+    } else if (data.has_varaiations == false) {
       reset();
       navigate("/added");
     }

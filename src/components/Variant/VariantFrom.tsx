@@ -3,6 +3,7 @@ import {
   Button,
   colors,
   Grid,
+  InputAdornment,
   InputLabel,
   TextField,
   Typography,
@@ -26,6 +27,7 @@ import VariantLocationListComponent from "./LocayionListComponents";
 import SelectVariation from "./SelectVarianton";
 import { capitalizeFirstLetter } from "../../shared/utils";
 import DisplayCard from "./DisplayCard";
+import { useNavigate } from "react-router-dom";
 
 const VariantFrom = () => {
   const dispatch = useAppDispatch();
@@ -49,6 +51,7 @@ const VariantFrom = () => {
       variationArray: [],
     },
   });
+  const nvigate = useNavigate();
   useEffect(() => {
     dispatch(flushVariations());
   }, []);
@@ -184,6 +187,12 @@ const VariantFrom = () => {
                     <InputLabel>Price </InputLabel>
                     <TextField
                       {...register("regular_price")}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">KWD</InputAdornment>
+                        ),
+                      }}
+                      placeholder="0.00"
                       error={Boolean(errors.regular_price)}
                       helperText={errors.regular_price?.message}
                       variant="outlined"
@@ -192,6 +201,12 @@ const VariantFrom = () => {
                   <Box>
                     <InputLabel>Sale price</InputLabel>
                     <TextField
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">KWD</InputAdornment>
+                        ),
+                      }}
+                      placeholder="0.00"
                       variant="outlined"
                       {...register("sale_price")}
                       error={Boolean(errors.sale_price)}
@@ -202,6 +217,12 @@ const VariantFrom = () => {
                     <InputLabel>Cost per item </InputLabel>
                     <TextField
                       {...register("cost")}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">KWD</InputAdornment>
+                        ),
+                      }}
+                      placeholder="0.00"
                       error={Boolean(errors.cost)}
                       helperText={errors.cost?.message}
                       variant="outlined"
@@ -242,6 +263,17 @@ const VariantFrom = () => {
                 sx={{ bgcolor: "primary.main", mb: 2 }}
               >
                 Save
+              </Button>
+              <Button
+                variant="contained"
+                size="large"
+                type="submit"
+                onClick={() => {
+                  nvigate("/added");
+                }}
+                sx={{ bgcolor: "primary.main", mb: 2, ml: 3 }}
+              >
+                Finish
               </Button>
             </Box>
           </FormCard>

@@ -1,4 +1,11 @@
-import { colors, Grid, InputLabel, TextField, Typography } from "@mui/material";
+import {
+  colors,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React from "react";
 import { FormCard, FormCardItem } from "./FormCard";
@@ -31,10 +38,15 @@ const PricingComponent = ({ formHook }: props) => {
                 render={({ field: { onChange }, formState: { errors } }) => (
                   <TextField
                     fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">KWD</InputAdornment>
+                      ),
+                    }}
                     onChange={onChange}
                     error={Boolean(errors.pricing?.price)}
                     helperText={errors.pricing?.price?.message}
-                    placeholder="KWD 0.00"
+                    placeholder="0.00"
                     variant="outlined"
                   />
                 )}
@@ -51,7 +63,12 @@ const PricingComponent = ({ formHook }: props) => {
                     onChange={onChange}
                     error={Boolean(errors.pricing?.salePrice)}
                     helperText={errors.pricing?.salePrice?.message}
-                    placeholder="KWD 0.00"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">KWD</InputAdornment>
+                      ),
+                    }}
+                    placeholder="0.00"
                     variant="outlined"
                   />
                 )}
@@ -70,7 +87,12 @@ const PricingComponent = ({ formHook }: props) => {
                   onChange={onChange}
                   error={Boolean(errors.pricing?.costPerItem)}
                   fullWidth
-                  placeholder="KWD 0.00"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">KWD</InputAdornment>
+                    ),
+                  }}
+                  placeholder="0.00"
                   helperText={
                     errors.pricing?.costPerItem?.message ||
                     "Customer's won't see this"
@@ -107,7 +129,6 @@ const PricingComponent = ({ formHook }: props) => {
                     error={Boolean(errors.pricing?.sku)}
                     fullWidth
                     onChange={onChange}
-                    placeholder="KWD 0.00"
                     helperText={errors.pricing?.sku?.message}
                     variant="outlined"
                   />
