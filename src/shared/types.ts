@@ -32,11 +32,11 @@ export type productFormValues = {
     };
     sku?: string;
   };
-  variations?: variantsFormValues[];
+  productVariations?: variantsFormValues[];
 };
 export type variantsFormValues = {
   variation_string: string;
-  variation: string[];
+  variationArray: { name: string; value: string }[];
   cost: number;
   regular_price: number;
   sale_price: number;

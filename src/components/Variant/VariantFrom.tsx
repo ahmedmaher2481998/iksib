@@ -2,36 +2,42 @@ import {
   Box,
   Button,
   colors,
-  FormControl,
   Grid,
   InputLabel,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { variantValidationResolver } from "../../shared/validation/VariantValidation";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { selectProduct } from "../../store/productSlice";
+import {
+  addVariationDetails,
+  flushVariations,
+  selectProduct,
+  selectVariations,
+} from "../../store/productSlice";
 import { FormCard, FormCardItem } from "../Product/FormCard";
 import FormHeader from "../Product/FormHeader";
 import MediaCard from "../Product/MediaCard";
 import { formHookType, variantsFormValues } from "../../shared/types";
 import VariantLocationListComponent from "./LocayionListComponents";
+import SelectVariation from "./SelectVarianton";
+import { capitalizeFirstLetter } from "../../shared/utils";
+import DisplayCard from "./DisplayCard";
 
 const VariantFrom = () => {
   const dispatch = useAppDispatch();
   const product = useAppSelector(selectProduct);
-  // const [variation, setVariation] = useState([]);
+  const variationArray = useAppSelector(selectVariations);
+  const [selectError, setSelectError] = useState<string | null>(null);
   const {
     control,
     handleSubmit,
     getValues,
     reset,
-    setError,
+
     setValue,
     register,
     watch,
@@ -39,7 +45,13 @@ const VariantFrom = () => {
   } = useForm<variantsFormValues>({
     resolver: variantValidationResolver,
     mode: "onChange",
+    defaultValues: {
+      variationArray: [],
+    },
   });
+  useEffect(() => {
+    dispatch(flushVariations());
+  }, []);
   const formHook: formHookType<variantsFormValues> = {
     control,
     errors,
@@ -49,12 +61,20 @@ const VariantFrom = () => {
     watch,
   };
   // TODO controls the values of the validation form
-  console.log("variant form");
-  console.log("attributes", product.attributes);
-  console.log(getValues());
-  console.log(errors);
+
   const handleProductSubmit = (data: variantsFormValues) => {
-    console.log(data);
+    if (variationArray.length < 1) {
+      setSelectError("Please Select At least one Variant...");
+    } else {
+      data.variationArray = [...variationArray];
+      data.variation_string = data.variationArray
+        .map((i) => capitalizeFirstLetter(i.value))
+        .join("-");
+      dispatch(flushVariations());
+      dispatch(addVariationDetails(data));
+      console.log("data", data);
+      reset();
+    }
   };
 
   return (
@@ -79,41 +99,54 @@ const VariantFrom = () => {
             },
           }}
           display="flex"
-          gap={3}
+          gap={2}
         >
           <FormHeader title="Variants" />
           <FormCard>
             <FormCardItem size={{ xs: 12 }}>
               <Stack
                 alignItems={"center"}
-                direction={"row"}
-                justifyContent="space-around"
-                spacing={2}
+                direction={"column"}
+                justifyContent="flex-start"
+                flexWrap={"wrap"}
+                spacing={1}
               >
-                {product.attributes?.map((option) => {
-                  return (
-                    <>
-                      <FormControl
-                        sx={{ m: 1, minWidth: "120px", width: "100%" }}
-                        size="small"
-                      >
-                        <Typography color={"black"}>{option.name}</Typography>
-                        <Select
-                          onChange={(e) => {
-                            const { value } = e.target;
-                          }}
-                        >
-                          {option.values?.map((v) => (
-                            <MenuItem key={v} value={v}>
-                              {v}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </>
-                  );
-                })}
+                {selectError && (
+                  <InputLabel
+                    sx={{ fontSize: 14, mt: 2 }}
+                    error={Boolean(selectError)}
+                  >
+                    {selectError}
+                  </InputLabel>
+                )}
+                <Grid
+                  container
+                  alignItems={"center"}
+                  justifyContent="space-between"
+                  p={1}
+                >
+                  {product.attributes?.map((option) => {
+                    return (
+                      <>
+                        <SelectVariation option={option} key={option.name} />
+                      </>
+                    );
+                  })}
+                </Grid>
               </Stack>
+              <Typography pl={1} pb={2}>
+                Variant:
+                <span
+                  style={{
+                    fontSize: 14,
+                    color: colors.grey[700],
+                  }}
+                >
+                  {variationArray
+                    .map((i) => capitalizeFirstLetter(i.value))
+                    .join(",")}
+                </span>
+              </Typography>
             </FormCardItem>
             <Stack
               width={"100%"}
@@ -180,72 +213,13 @@ const VariantFrom = () => {
             <Typography
               fontSize={18}
               width={"100%"}
-              pl={4}
-              pb={2}
+              pl={3}
+              py={1}
               color={"black"}
             >
               Inventory
             </Typography>
-            {/* <Stack
-              direction="row"
-              flexWrap={"wrap"}
-              alignItems="center"
-              px={4}
-              justifyContent="space-between"
-            >
-              <>
-                <div style={{ minWidth: "250px" }}>
-                  <InputLabel>location 1</InputLabel>
-                  <TextField
-                    {...register("inventory.location1.quantitiy")}
-                    error={Boolean(errors.inventory?.location1)}
-                    helperText={errors.inventory?.location1?.quantitiy?.message}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </div>
-                <div style={{ minWidth: "250px" }}>
-                  <InputLabel>location 2</InputLabel>
-                  <TextField
-                    {...register("inventory.location2.quantitiy")}
-                    error={Boolean(errors.inventory?.location2)}
-                    helperText={errors.inventory?.location2?.quantitiy?.message}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </div>
-                <div style={{ minWidth: "250px" }}>
-                  <InputLabel>location 3</InputLabel>
-                  <TextField
-                    {...register("inventory.location3.quantitiy")}
-                    error={Boolean(errors.inventory?.location3)}
-                    helperText={errors.inventory?.location3?.quantitiy?.message}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </div>
-                <div style={{ minWidth: "250px" }}>
-                  <InputLabel>location 4</InputLabel>
-                  <TextField
-                    {...register("inventory.location4.quantitiy")}
-                    error={Boolean(errors.inventory?.location4)}
-                    helperText={errors.inventory?.location4?.quantitiy?.message}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </div>
-                <div style={{ minWidth: "250px" }}>
-                  <InputLabel>location 5</InputLabel>
-                  <TextField
-                    {...register("inventory.location2.quantitiy")}
-                    error={Boolean(errors.inventory?.location2)}
-                    helperText={errors.inventory?.location2?.quantitiy?.message}
-                    fullWidth
-                    variant="outlined"
-                  />
-                </div>
-              </>
-            </Stack> */}
+
             <Grid
               container
               justifyContent={"space-between"}
@@ -260,12 +234,18 @@ const VariantFrom = () => {
                 variant="contained"
                 size="large"
                 type="submit"
+                onClick={() => {
+                  if (variationArray.length < 1) {
+                    setSelectError("Please Select At least one Variant...");
+                  }
+                }}
                 sx={{ bgcolor: "primary.main", mb: 2 }}
               >
                 Save
               </Button>
             </Box>
           </FormCard>
+          <DisplayCard />
         </Box>
       </Box>
     </>

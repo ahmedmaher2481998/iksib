@@ -2,8 +2,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const variantValidationSchema = yup.object({
-  variation: yup.array().of(yup.string()).required(),
-  // variation_string: yup.string().required("please select variation"),
   cost: yup
     .number()
     .typeError("cost must be a number")
@@ -32,7 +30,7 @@ const variantValidationSchema = yup.object({
         .number()
         .typeError("cost must be a number")
         .default(0)
-        .notRequired(),
+        .required(),
       location3: yup
         .number()
         .typeError("cost must be a number")

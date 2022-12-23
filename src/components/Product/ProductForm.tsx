@@ -45,7 +45,7 @@ const ProductForm = () => {
     dispatch(addProductData(data));
     if (data.has_varaiations) {
       reset();
-      navigate("/variant");
+      navigate("/variant", { replace: true });
     } else {
       reset();
       navigate("/added");

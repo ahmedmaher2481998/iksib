@@ -6,9 +6,13 @@ import {
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import { string } from "yup/lib/locale";
 interface ProductInterface {
   product: productFormValues;
-  variations: variantOption[];
+  variations: {
+    name: string;
+    value: string;
+  }[];
 }
 const initialState: ProductInterface = {
   product: {
@@ -22,7 +26,7 @@ const initialState: ProductInterface = {
     sub_categories: [2, 3],
     title: "title",
     attributes: [],
-    variations: [],
+    productVariations: [],
   },
   // too keep track of selected variations outside of the product Obj
   variations: [],
@@ -33,20 +37,49 @@ export const productSlice = createSlice({
   reducers: {
     addProductData: (state, action: PayloadAction<productFormValues>) => {
       state.product = { ...action.payload };
-      state.variations = action.payload.attributes || [];
+
       return state;
     },
     addVariationDetails: (state, action: PayloadAction<variantsFormValues>) => {
-      state.product.variations?.push(action.payload);
+      if (state.product.productVariations) {
+        state.product.productVariations.push(action.payload);
+      } else {
+        state.product.productVariations = [action.payload];
+      }
       return state;
     },
     removeVariationDetailsByVariationString: (
       state,
-      action: PayloadAction<{ variation_string: string }>
+      action: PayloadAction<string>
     ) => {
-      state.product.variations?.filter((v) => {
-        if (v.variation_string !== action.payload.variation_string) return v;
-      });
+      state.product.productVariations = state.product.productVariations?.filter(
+        (v) => {
+          return v.variation_string !== action.payload;
+        }
+      );
+      return state;
+    },
+    addSelectedVariation: (
+      state,
+      action: PayloadAction<{ name: string; value: string }>
+    ) => {
+      const option = state.variations.find(
+        (i) => i.name === action.payload.name
+      );
+      if (!option) {
+        state.variations.push(action.payload);
+      } else {
+        state.variations.forEach((i) => {
+          if (i.name === action.payload.name) {
+            i.value = action.payload.value;
+          }
+        });
+      }
+
+      return state;
+    },
+    flushVariations: (state) => {
+      state.variations = [];
       return state;
     },
   },
@@ -55,7 +88,10 @@ export const {
   addProductData,
   addVariationDetails,
   removeVariationDetailsByVariationString,
+  addSelectedVariation,
+  flushVariations,
 } = productSlice.actions;
 export const selectProduct = (state: RootState) => state.productReducer.product;
-
+export const selectVariations = (state: RootState) =>
+  state.productReducer.variations;
 export default productSlice.reducer;
