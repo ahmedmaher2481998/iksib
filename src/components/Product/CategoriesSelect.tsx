@@ -6,17 +6,16 @@ import {
   ListItemText,
   MenuItem,
   Select,
-  SelectChangeEvent,
 } from "@mui/material";
 import React, { FC } from "react";
 import { Controller } from "react-hook-form";
 import { categories as categoriesData } from "../../data";
-import { formHookType } from "../../shared/types";
+import { formHookType, productFormValues } from "../../shared/types";
 import { getCheckedBoolean } from "../../shared/utils";
 type props = {
   catagories: number[];
   setCatagories: React.Dispatch<React.SetStateAction<number[]>>;
-  formHook: formHookType;
+  formHook: formHookType<productFormValues>;
 };
 
 const CategoriesSelect: FC<props> = ({
@@ -24,7 +23,7 @@ const CategoriesSelect: FC<props> = ({
   setCatagories,
   formHook,
 }: props) => {
-  const { control, errors, getValues, register, setValue } = formHook;
+  const { control, setValue } = formHook;
 
   return (
     <>
@@ -33,20 +32,16 @@ const CategoriesSelect: FC<props> = ({
         <Controller
           name="categories"
           control={control}
-          render={({
-            formState: { errors },
-            field: { onChange, value, name },
-            fieldState: { isTouched },
-          }) => {
+          render={({ formState: { errors }, field: { value } }) => {
             return (
               <FormControl error={Boolean(errors.categories)}>
                 <Select
                   multiple
                   error={Boolean(errors.categories)}
                   value={catagories}
-                  onChange={(e: any) => {
+                  onChange={(e) => {
                     setCatagories(e.target.value as number[]);
-                    setValue("categories", e.target.value);
+                    setValue("categories", e.target.value as number[]);
                   }}
                   renderValue={(selected) => {
                     const selectedCats = categoriesData.filter((item) =>

@@ -1,6 +1,5 @@
 import { Box, colors, InputLabel, Typography } from "@mui/material";
 import React from "react";
-import { FormCard, FormCardItem } from "./FormCard";
 
 const MediaCard = () => {
   const handleOnDrop = (e: React.DragEvent<HTMLInputElement>) => {

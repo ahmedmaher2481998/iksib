@@ -7,13 +7,14 @@ import { formHookType, productFormValues } from "../../shared/types";
 import PricingComponent from "./PricingComponent";
 import { Controller } from "react-hook-form";
 type props = {
-  formHook: formHookType;
+  formHook: formHookType<productFormValues>;
 };
 const SelectionPickableAndVariants: FC<props> = ({ formHook }: props) => {
-  const [showHasVariants, setShowHasVariants] = useState<Boolean | null>(null);
+  const [showHasVariants, setShowHasVariants] = useState<boolean | null>(null);
   return (
     <>
       <FormCard>
+        productFormValues
         <FormCardItem size={{ xs: 12 }}>
           <Stack sx={{ width: "100%" }} spacing={1} direction="column" p={1}>
             <Box
@@ -63,7 +64,6 @@ const SelectionPickableAndVariants: FC<props> = ({ formHook }: props) => {
                 control={formHook.control}
                 render={({
                   field: { value, onChange },
-                  fieldState: {},
                   formState: { errors },
                 }) => {
                   return (

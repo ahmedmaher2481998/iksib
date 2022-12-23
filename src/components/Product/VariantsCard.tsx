@@ -179,7 +179,7 @@ const VariantsCard: FC<props> = ({ formHook }: props) => {
                 </Stack>
                 <Box sx={{ p: 2, gap: 1, display: "flex", flexWrap: "wrap" }}>
                   {/* FIXME */}
-                  {/* Render values selected  */}
+                  {/* Render values selected with first enter */}
                   {chips}
                 </Box>
               </FormCardItem>

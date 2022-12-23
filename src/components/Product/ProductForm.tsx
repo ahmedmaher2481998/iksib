@@ -40,8 +40,6 @@ const ProductForm = () => {
   const formHook = { setValue, register, errors, getValues, control, watch };
   console.log("Values", getValues(), "Errors:", errors);
   const handleProductSubmit = (data: productFormValues) => {
-    console.log("Submitting");
-    console.log(data);
     dispatch(addProductData(data));
     if (data.has_varaiations) {
       reset();

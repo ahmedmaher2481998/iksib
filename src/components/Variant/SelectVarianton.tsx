@@ -1,5 +1,5 @@
 import { FormControl, Grid, MenuItem, Select, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { variantOption } from "../../shared/types";
 import { capitalizeFirstLetter } from "../../shared/utils";
 import { useAppDispatch } from "../../store/hooks";

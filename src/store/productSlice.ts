@@ -1,12 +1,7 @@
-import {
-  productFormValues,
-  variantOption,
-  variantsFormValues,
-} from "../shared/types";
+import { productFormValues, variantsFormValues } from "../shared/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
-import { string } from "yup/lib/locale";
 interface ProductInterface {
   product: productFormValues;
   variations: {

@@ -9,10 +9,10 @@ import {
 } from "@mui/material";
 import React, { FC, useState } from "react";
 import { Controller } from "react-hook-form";
-import { categories, categories as categoriesData } from "../../data";
+import { categories as categoriesData } from "../../data";
 import {
-  CategoryType,
   formHookType,
+  productFormValues,
   subCategoryType,
 } from "../../shared/types";
 import { getCheckedBoolean } from "../../shared/utils";
@@ -20,11 +20,11 @@ import { getCheckedBoolean } from "../../shared/utils";
 type props = {
   catagories: number[];
 
-  formHook: formHookType;
+  formHook: formHookType<productFormValues>;
 };
 
 const SubCategory: FC<props> = ({ catagories, formHook }: props) => {
-  const { control, getValues, setValue } = formHook;
+  const { control, setValue } = formHook;
   const [subCategory, setSubCategory] = useState<number[]>([]);
 
   return (
@@ -34,20 +34,16 @@ const SubCategory: FC<props> = ({ catagories, formHook }: props) => {
         <Controller
           name="sub_categories"
           control={control}
-          render={({
-            formState: { errors },
-            field: { onChange, value, name },
-            fieldState: { isTouched },
-          }) => {
+          render={({ formState: { errors }, field: { value } }) => {
             return (
               <FormControl error={Boolean(errors.sub_categories)}>
                 <Select
                   multiple
                   error={Boolean(errors.sub_categories)}
                   value={subCategory}
-                  onChange={(e: any) => {
-                    setSubCategory((old) => e.target.value as number[]);
-                    setValue("sub_categories", e.target.value);
+                  onChange={(e) => {
+                    setSubCategory(() => e.target.value as number[]);
+                    setValue("sub_categories", e.target.value as number[]);
                   }}
                   renderValue={(selected) => {
                     const subs = SubCategoryList(catagories);
@@ -95,13 +91,4 @@ const SubCategoryList = (categories: number[]) => {
   });
   return values;
 };
-type subCategoryProps = {
-  sub: subCategoryType;
-  values: number[];
-};
-// const SubCategoryItem = ({ sub, values }: subCategoryProps) => {
-//   return (
-
-//   );
-// };
 export default SubCategory;

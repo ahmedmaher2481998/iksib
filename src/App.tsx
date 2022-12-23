@@ -1,4 +1,3 @@
-import React, { createContext, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -29,6 +28,5 @@ function App() {
 export default App;
 const Added = () => {
   const product = useAppSelector(selectProduct);
-  console.log(product);
   return <p>{JSON.stringify(product)}</p>;
 };

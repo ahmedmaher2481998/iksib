@@ -5,7 +5,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  colors,
   Typography,
   IconButton,
   Button,
@@ -22,7 +21,6 @@ import {
   Logout,
   ViewQuilt,
   KeyboardArrowRight,
-  Calculate,
 } from "@mui/icons-material";
 import { FC } from "react";
 const SidePanel = () => (
@@ -64,7 +62,7 @@ const SidePanel = () => (
     </List>
     <Box
       justifyContent={"center"}
-      sx={(theme) => ({
+      sx={() => ({
         mt: "auto",
         width: "100%",
 

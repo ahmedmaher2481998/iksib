@@ -45,10 +45,7 @@ const PricingComponent = ({ formHook }: props) => {
               <Controller
                 control={formHook.control}
                 name="pricing.salePrice"
-                render={({
-                  field: { name, onChange, value },
-                  formState: { errors },
-                }) => (
+                render={({ field: { onChange }, formState: { errors } }) => (
                   <TextField
                     fullWidth
                     onChange={onChange}

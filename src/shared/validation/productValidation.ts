@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import { addonType, variantOption } from "../types";
 import { yupResolver } from "@hookform/resolvers/yup";
 const productValidationSchema = yup.object({
   id: yup
